@@ -1,20 +1,5 @@
 include(OmimConfig)
 
-# TestServer fixture configuration
-add_test(
-  NAME OmimStartTestServer
-  COMMAND start_server.py
-  WORKING_DIRECTORY ${OMIM_ROOT}/tools/python/test_server
-)
-add_test(
-  NAME OmimStopTestServer
-  COMMAND stop_server.py
-  WORKING_DIRECTORY ${OMIM_ROOT}/tools/python/test_server
-)
-set_tests_properties(OmimStartTestServer PROPERTIES FIXTURES_SETUP TestServer)
-set_tests_properties(OmimStopTestServer PROPERTIES FIXTURES_CLEANUP TestServer)
-set_tests_properties(OmimStartTestServer OmimStopTestServer PROPERTIES LABELS "fixture")
-
 # Options:
 # * REQUIRE_QT - requires QT event loop
 # * REQUIRE_SERVER - requires test server (TestServer fixture that runs testserver.py)

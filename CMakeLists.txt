@@ -209,9 +209,25 @@ if (PLATFORM_LINUX OR PLATFORM_ANDROID)
 endif()
 
 if (NOT SKIP_TESTS)
-  set(SKIP_TESTS FALSE)
   enable_testing()
   set(CTEST_CONFIGURATION_TYPE ${CMAKE_BUILD_TYPE})
+  # Enables ctest -T memcheck with valgrind
+  include(CTest)
+
+  # TestServer fixture configuration
+  add_test(
+    NAME OmimStartTestServer
+    COMMAND start_server.py
+    WORKING_DIRECTORY ${OMIM_ROOT}/tools/python/test_server
+  )
+  add_test(
+    NAME OmimStopTestServer
+    COMMAND stop_server.py
+    WORKING_DIRECTORY ${OMIM_ROOT}/tools/python/test_server
+  )
+  set_tests_properties(OmimStartTestServer PROPERTIES FIXTURES_SETUP TestServer)
+  set_tests_properties(OmimStopTestServer PROPERTIES FIXTURES_CLEANUP TestServer)
+  set_tests_properties(OmimStartTestServer OmimStopTestServer PROPERTIES LABELS "fixture")
 endif()
 
 if (NOT PYTHON_VERSION)
