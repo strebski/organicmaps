@@ -20,7 +20,6 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 
 import app.organicmaps.background.OsmUploadWork;
 import app.organicmaps.downloader.DownloaderNotifier;
-import app.organicmaps.base.MediaPlayerWrapper;
 import app.organicmaps.bookmarks.data.BookmarkManager;
 import app.organicmaps.display.DisplayManager;
 import app.organicmaps.downloader.CountryItem;
@@ -37,7 +36,6 @@ import app.organicmaps.settings.StoragePathManager;
 import app.organicmaps.sound.TtsPlayer;
 import app.organicmaps.util.Config;
 import app.organicmaps.util.ConnectionState;
-import app.organicmaps.util.Counters;
 import app.organicmaps.util.SharedPropertiesUtils;
 import app.organicmaps.util.StorageUtils;
 import app.organicmaps.util.ThemeSwitcher;
@@ -82,7 +80,6 @@ public class MwmApplication extends Application implements Application.ActivityL
   private final Object mMainQueueToken = new Object();
   @NonNull
   private final MapManager.StorageCallback mStorageCallbacks = new StorageCallbackImpl();
-  private MediaPlayerWrapper mPlayer;
 
   @Nullable
   private WeakReference<Activity> mTopActivity;
@@ -124,11 +121,6 @@ public class MwmApplication extends Application implements Application.ActivityL
     return mDisplayManager;
   }
 
-  public MwmApplication()
-  {
-    super();
-  }
-
   @NonNull
   public static MwmApplication from(@NonNull Context context)
   {
@@ -167,7 +159,6 @@ public class MwmApplication extends Application implements Application.ActivityL
     mIsolinesManager = new IsolinesManager(this);
     mLocationHelper = new LocationHelper(this);
     mSensorHelper = new SensorHelper(this);
-    mPlayer = new MediaPlayerWrapper(this);
     mDisplayManager = new DisplayManager();
   }
 
@@ -274,11 +265,6 @@ public class MwmApplication extends Application implements Application.ActivityL
     System.loadLibrary("organicmaps");
   }
 
-  public static void onUpgrade(@NonNull Context context)
-  {
-    Counters.resetAppSessionCounters(context);
-  }
-
   // Called from jni
   @SuppressWarnings("unused")
   void forwardToMainThread(final long taskPointer)
@@ -286,12 +272,6 @@ public class MwmApplication extends Application implements Application.ActivityL
     Message m = Message.obtain(mMainLoopHandler, () -> nativeProcessTask(taskPointer));
     m.obj = mMainQueueToken;
     mMainLoopHandler.sendMessage(m);
-  }
-
-  @NonNull
-  public MediaPlayerWrapper getMediaPlayer()
-  {
-    return mPlayer;
   }
 
   private static native void nativeSetSettingsDir(String settingsPath);
