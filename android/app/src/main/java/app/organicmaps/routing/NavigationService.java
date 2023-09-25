@@ -28,6 +28,7 @@ import androidx.core.content.ContextCompat;
 
 import app.organicmaps.Framework;
 import app.organicmaps.MwmActivity;
+import app.organicmaps.MwmApplication;
 import app.organicmaps.R;
 import app.organicmaps.base.MediaPlayerWrapper;
 import app.organicmaps.location.LocationHelper;
@@ -109,6 +110,12 @@ public class NavigationService extends Service implements LocationListener
   @Override
   public void onCreate()
   {
+    // The service can be restarted implicitly by the system without having properly initialized native core
+    // if somebody decides to patch onStartCommand() to return anything other than START_NOT_STICKY.
+    // {@link MwmApplication.init() }
+    if (!MwmApplication.from(this).arePlatformAndCoreInitialized())
+      throw new IllegalStateException("Application is not initialized");
+
     Logger.i(TAG);
 
     /*
@@ -191,7 +198,11 @@ public class NavigationService extends Service implements LocationListener
     // re-subscribe for more frequent GPS updates for navigation.
     LocationHelper.from(this).restart();
 
-    return START_STICKY;
+    // Tell the system that this service should not be restarted automatically
+    // to avoid crashes without fully initialized native core.
+    // {@link MwmApplication.init() }
+    // https://github.com/organicmaps/organicmaps/issues/6091
+    return START_NOT_STICKY;
   }
 
   @Nullable
