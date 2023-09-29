@@ -272,11 +272,6 @@ public final class Map
     nativeScaleMinus();
   }
 
-  public static void onScale(double factor, double focusX, double focusY, boolean isAnim)
-  {
-    nativeScale(factor, focusX, focusY, isAnim);
-  }
-
   public static void onTouch(int actionType, MotionEvent event, int pointerIndex)
   {
     if (event.getPointerCount() == 1)
@@ -289,11 +284,6 @@ public final class Map
           event.getPointerId(0), event.getX(0), event.getY(0),
           event.getPointerId(1), event.getX(1), event.getY(1), pointerIndex);
     }
-  }
-
-  public static void onTouch(float x, float y)
-  {
-    nativeOnTouch(Map.NATIVE_ACTION_UP, 0, x, y, Map.INVALID_TOUCH_ID, 0, 0, 0);
   }
 
   public static boolean isEngineCreated()
@@ -371,6 +361,6 @@ public final class Map
   private static native void nativeMove(double factorX, double factorY, boolean isAnim);
   private static native void nativeScalePlus();
   private static native void nativeScaleMinus();
-  private static native void nativeScale(double factor, double focusX, double focusY, boolean isAnim);
+
   private static native void nativeOnTouch(int actionType, int id1, float x1, float y1, int id2, float x2, float y2, int maskedPointer);
 }

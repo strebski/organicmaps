@@ -13,15 +13,11 @@ import app.organicmaps.R;
 import app.organicmaps.util.Utils;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class PlacePhoneAdapter extends RecyclerView.Adapter<PlacePhoneAdapter.ViewHolder>
 {
 
-  private ArrayList<String> mPhoneData = new ArrayList<>();
-
-  public PlacePhoneAdapter() {}
+  private final ArrayList<String> mPhoneData = new ArrayList<>();
 
   public void refreshPhones(String phones) {
     if (TextUtils.isEmpty(phones))

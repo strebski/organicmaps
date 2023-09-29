@@ -1,7 +1,5 @@
 package app.organicmaps.bookmarks;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,13 +11,10 @@ public abstract class BaseBookmarkCategoryAdapter<V extends RecyclerView.ViewHol
     extends RecyclerView.Adapter<V>
 {
   @NonNull
-  private final Context mContext;
-  @NonNull
   private List<BookmarkCategory> mItems;
 
-  BaseBookmarkCategoryAdapter(@NonNull Context context, @NonNull List<BookmarkCategory> items)
+  BaseBookmarkCategoryAdapter(@NonNull List<BookmarkCategory> items)
   {
-    mContext = context;
     mItems = items;
   }
 
@@ -27,12 +22,6 @@ public abstract class BaseBookmarkCategoryAdapter<V extends RecyclerView.ViewHol
   {
     mItems = items;
     notifyDataSetChanged();
-  }
-
-  @NonNull
-  protected Context requireContext()
-  {
-    return mContext;
   }
 
   @NonNull

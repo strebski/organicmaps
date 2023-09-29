@@ -14,7 +14,6 @@ import androidx.fragment.app.FragmentManager;
 import app.organicmaps.DownloadResourcesLegacyActivity;
 import app.organicmaps.Framework;
 import app.organicmaps.Map;
-import app.organicmaps.MapFragment;
 import app.organicmaps.MwmActivity;
 import app.organicmaps.MwmApplication;
 import app.organicmaps.api.ParsedMwmRequest;
@@ -37,7 +36,7 @@ import app.organicmaps.util.concurrency.ThreadPool;
 import java.io.File;
 import java.util.List;
 
-public class Factory
+public abstract class Factory
 {
   public static class GeoIntentProcessor implements IntentProcessor
   {

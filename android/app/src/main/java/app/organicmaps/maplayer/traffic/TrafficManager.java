@@ -2,13 +2,13 @@ package app.organicmaps.maplayer.traffic;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import app.organicmaps.util.log.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 @MainThread
 public enum TrafficManager
 {

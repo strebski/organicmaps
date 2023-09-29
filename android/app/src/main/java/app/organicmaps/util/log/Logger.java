@@ -16,6 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+// Called from JNI.
+@Keep
+@SuppressWarnings("unused")
 @ThreadSafe
 public final class Logger
 {
@@ -114,6 +117,7 @@ public final class Logger
 
   // Also called from JNI to proxy native code logging (with tag == null).
   @Keep
+  @SuppressWarnings("unused")
   private static void log(int level, @Nullable String tag, @NonNull String msg, @Nullable Throwable tr)
   {
     final String logsFolder = LogsManager.INSTANCE.getEnabledLogsFolder();

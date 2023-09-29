@@ -32,8 +32,6 @@ public class BookmarkColorDialogFragment extends BaseMwmDialogFragment
 
   private OnBookmarkColorChangeListener mColorSetListener;
 
-  public BookmarkColorDialogFragment() {}
-
   @NonNull
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState)

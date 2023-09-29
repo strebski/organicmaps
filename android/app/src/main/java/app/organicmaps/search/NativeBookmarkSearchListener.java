@@ -1,10 +1,13 @@
 package app.organicmaps.search;
 
+import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 
 /**
  * Native search will return results via this interface.
  */
+// Used by JNI.
+@Keep
 @SuppressWarnings("unused")
 public interface NativeBookmarkSearchListener
 {

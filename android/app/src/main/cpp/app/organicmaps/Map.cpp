@@ -150,13 +150,6 @@ Java_app_organicmaps_Map_nativeScaleMinus(JNIEnv *, jclass)
 }
 
 JNIEXPORT void JNICALL
-Java_app_organicmaps_Map_nativeScale(
-  JNIEnv *, jclass, jdouble factor, jdouble focusX, jdouble focusY, jboolean isAnim)
-{
-  g_framework->Scale(factor, {focusX, focusY}, isAnim);
-}
-
-JNIEXPORT void JNICALL
 Java_app_organicmaps_Map_nativeOnTouch(JNIEnv *, jclass, jint action,
                                        jint id1, jfloat x1, jfloat y1,
                                        jint id2, jfloat x2, jfloat y2,

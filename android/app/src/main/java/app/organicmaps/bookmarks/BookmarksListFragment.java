@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.CallSuper;
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -56,7 +56,6 @@ public class BookmarksListFragment extends BaseMwmRecyclerFragment<ConcatAdapter
                ChooseBookmarksSortingTypeFragment.ChooseSortingTypeListener,
                MenuBottomSheetFragment.MenuBottomSheetInterface
 {
-  public static final String TAG = BookmarksListFragment.class.getSimpleName();
   public static final String EXTRA_CATEGORY = "bookmark_category";
   public static final String EXTRA_BUNDLE = "bookmark_bundle";
   private static final int INDEX_BOOKMARKS_COLLECTION_ADAPTER = 0;
@@ -174,7 +173,7 @@ public class BookmarksListFragment extends BaseMwmRecyclerFragment<ConcatAdapter
     if (bar != null)
       bar.setTitle(mCategoryDataSource.getData().getName());
 
-    ViewGroup toolbar = ((AppCompatActivity) requireActivity()).findViewById(R.id.toolbar);
+    ViewGroup toolbar = requireActivity().findViewById(R.id.toolbar);
     mSearchContainer = toolbar.findViewById(R.id.search_container);
     UiUtils.hide(mSearchContainer, R.id.back);
 
@@ -212,12 +211,6 @@ public class BookmarksListFragment extends BaseMwmRecyclerFragment<ConcatAdapter
   }
 
   @Override
-  public void onPause()
-  {
-    super.onPause();
-  }
-
-  @Override
   public void onStop()
   {
     super.onStop();
@@ -236,10 +229,6 @@ public class BookmarksListFragment extends BaseMwmRecyclerFragment<ConcatAdapter
       onItemClick(position);
     });
     adapter.setOnLongClickListener((v, position) ->
-    {
-      onItemMore(position);
-    });
-    adapter.setMoreListener((v, position) ->
     {
       onItemMore(position);
     });
@@ -326,6 +315,9 @@ public class BookmarksListFragment extends BaseMwmRecyclerFragment<ConcatAdapter
     }
   }
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   @Override
   public void onBookmarkSearchResultsUpdate(@Nullable long[] bookmarkIds, long timestamp)
   {
@@ -334,6 +326,9 @@ public class BookmarksListFragment extends BaseMwmRecyclerFragment<ConcatAdapter
     updateSearchResults(bookmarkIds);
   }
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   @Override
   public void onBookmarkSearchResultsEnd(@Nullable long[] bookmarkIds, long timestamp)
   {
@@ -778,12 +773,18 @@ public class BookmarksListFragment extends BaseMwmRecyclerFragment<ConcatAdapter
     actionBar.setTitle(mCategoryDataSource.getData().getName());
   }
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   @Override
   public void onBookmarksLoadingStarted()
   {
     // No op.
   }
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   @Override
   public void onBookmarksLoadingFinished()
   {
@@ -797,6 +798,9 @@ public class BookmarksListFragment extends BaseMwmRecyclerFragment<ConcatAdapter
     updateLoadingPlaceholder(view, false);
   }
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   @Override
   public void onBookmarksFileLoaded(boolean success)
   {

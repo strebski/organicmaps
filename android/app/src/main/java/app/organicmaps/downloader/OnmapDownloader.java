@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 
 import androidx.core.view.ViewCompat;
@@ -41,6 +42,9 @@ public class OnmapDownloader implements MwmActivity.LeftAnimationTrackListener
 
   private final MapManager.StorageCallback mStorageCallback = new MapManager.StorageCallback()
   {
+    // Called from JNI.
+    @Keep
+    @SuppressWarnings("unused")
     @Override
     public void onStatusChanged(List<MapManager.StorageCallbackData> data)
     {
@@ -65,6 +69,9 @@ public class OnmapDownloader implements MwmActivity.LeftAnimationTrackListener
       }
     }
 
+    // Called from JNI.
+    @Keep
+    @SuppressWarnings("unused")
     @Override
     public void onProgress(String countryId, long localSize, long remoteSize)
     {
@@ -78,6 +85,9 @@ public class OnmapDownloader implements MwmActivity.LeftAnimationTrackListener
 
   private final MapManager.CurrentCountryChangedListener mCountryChangedListener = new MapManager.CurrentCountryChangedListener()
   {
+    // Called from JNI.
+    @Keep
+    @SuppressWarnings("unused")
     @Override
     public void onCurrentCountryChanged(String countryId)
     {
@@ -89,16 +99,6 @@ public class OnmapDownloader implements MwmActivity.LeftAnimationTrackListener
   public void updateState(boolean shouldAutoDownload)
   {
     updateStateInternal(shouldAutoDownload);
-  }
-
-  private static boolean isMapDownloading(@Nullable CountryItem country)
-  {
-    if (country == null) return false;
-
-    boolean enqueued = country.status == CountryItem.STATUS_ENQUEUED;
-    boolean progress = country.status == CountryItem.STATUS_PROGRESS;
-    boolean applying = country.status == CountryItem.STATUS_APPLYING;
-    return enqueued || progress || applying;
   }
 
   private void updateProgressState(boolean shouldAutoDownload)
@@ -231,12 +231,6 @@ public class OnmapDownloader implements MwmActivity.LeftAnimationTrackListener
       return windowInsets;
     });
   }
-
-  @Override
-  public void onTrackStarted(boolean collapsed) {}
-
-  @Override
-  public void onTrackFinished(boolean collapsed) {}
 
   @Override
   public void onTrackLeftAnimation(float offset)

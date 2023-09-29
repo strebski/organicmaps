@@ -172,7 +172,7 @@ public class NestedScrollViewClickFixed extends FrameLayout implements NestedScr
 
     private static final AccessibilityDelegate ACCESSIBILITY_DELEGATE = new AccessibilityDelegate();
 
-    private static final int[] SCROLLVIEW_STYLEABLE = new int[] {
+    private static final int[] SCROLLVIEW_STYLEABLE = {
         android.R.attr.fillViewport
     };
 

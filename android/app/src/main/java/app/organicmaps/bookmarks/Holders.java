@@ -271,8 +271,10 @@ public class Holders
     @NonNull
     private final TextView mName;
     @NonNull
+    final
     CheckBox mVisibilityMarker;
     @NonNull
+    final
     ImageView mMoreButton;
 
     CategoryViewHolder(@NonNull View root)

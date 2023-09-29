@@ -3,6 +3,7 @@ package app.organicmaps.settings;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -29,7 +30,7 @@ public class SettingsActivity extends BaseToolbarActivity
 
   @Override
   @SuppressWarnings("unchecked")
-  public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref)
+  public boolean onPreferenceStartFragment(@NonNull PreferenceFragmentCompat caller, @NonNull Preference pref)
   {
     String title = TextUtils.isEmpty(pref.getTitle()) ? null : pref.getTitle().toString();
     try
@@ -44,7 +45,8 @@ public class SettingsActivity extends BaseToolbarActivity
   }
 
   @Override
-  public boolean onPreferenceStartScreen(PreferenceFragmentCompat preferenceFragmentCompat, PreferenceScreen preferenceScreen)
+  public boolean onPreferenceStartScreen(@NonNull PreferenceFragmentCompat preferenceFragmentCompat,
+                                         @NonNull PreferenceScreen preferenceScreen)
   {
     Bundle args = new Bundle();
     args.putString(PreferenceFragmentCompat.ARG_PREFERENCE_ROOT, preferenceScreen.getKey());

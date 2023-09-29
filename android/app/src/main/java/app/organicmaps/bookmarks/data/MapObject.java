@@ -4,12 +4,12 @@ import android.os.Parcel;
 import android.text.TextUtils;
 
 import androidx.annotation.IntDef;
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import app.organicmaps.routing.RoutePointInfo;
 import app.organicmaps.search.Popularity;
-import app.organicmaps.search.PopularityProvider;
 import app.organicmaps.widget.placepage.PlacePageData;
 
 import java.lang.annotation.Retention;
@@ -20,7 +20,9 @@ import java.util.List;
 
 // TODO(yunikkk): Refactor. Displayed information is different from edited information, and it's better to
 // separate them. Simple getters from jni place_page::Info and osm::EditableFeature should be enough.
-public class MapObject implements PopularityProvider, PlacePageData
+// Called from JNI.
+@Keep
+public class MapObject implements PlacePageData
 {
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({ POI, API_POINT, BOOKMARK, MY_POSITION, SEARCH })
@@ -48,10 +50,10 @@ public class MapObject implements PopularityProvider, PlacePageData
   @MapObjectType
   private final int mMapObjectType;
 
-  private String mTitle;
+  private final String mTitle;
   @Nullable
   private final String mSecondaryTitle;
-  private String mSubtitle;
+  private final String mSubtitle;
   private double mLat;
   private double mLon;
   private final String mAddress;
@@ -65,7 +67,7 @@ public class MapObject implements PopularityProvider, PlacePageData
   @NonNull
   private final RoadWarningMarkType mRoadWarningMarkType;
   @NonNull
-  private String mDescription;
+  private final String mDescription;
   @Nullable
   private List<String> mRawTypes;
 
@@ -193,11 +195,6 @@ public class MapObject implements PopularityProvider, PlacePageData
     return mTitle;
   }
 
-  public void setTitle(@NonNull String title)
-  {
-    mTitle = title;
-  }
-
   @NonNull
   public String getName()
   {
@@ -238,18 +235,6 @@ public class MapObject implements PopularityProvider, PlacePageData
     return mDescription;
   }
 
-  public void setDescription(@NonNull String description)
-  {
-    mDescription = description;
-  }
-
-  @NonNull
-  @Override
-  public Popularity getPopularity()
-  {
-    return mPopularity;
-  }
-
   @NonNull
   public RoadWarningMarkType getRoadWarningMarkType()
   {
@@ -263,25 +248,9 @@ public class MapObject implements PopularityProvider, PlacePageData
     return res == null ? "" : res;
   }
 
-  public boolean hasMetadata()
-  {
-    return mMetadata != null && !mMetadata.isEmpty();
-  }
-
   public String getApiId()
   {
     return mApiId;
-  }
-
-  @NonNull
-  public  String[] getRawTypes()
-  {
-    if (mRawTypes == null)
-      return new String[0];
-
-    String[] types = new String[mRawTypes.size()];
-    mRawTypes.toArray(types);
-    return types;
   }
 
   public void setLat(double lat)
@@ -294,11 +263,9 @@ public class MapObject implements PopularityProvider, PlacePageData
     mLon = lon;
   }
 
-  public void setSubtitle(String typeName)
-  {
-    mSubtitle = typeName;
-  }
-
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   private void addMetadata(int type, String value)
   {
     mMetadata.addMetadata(type, value);

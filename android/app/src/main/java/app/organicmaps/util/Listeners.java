@@ -75,20 +75,4 @@ public final class Listeners<T> implements Iterable<T>
       mListeners.remove(listener);
   }
 
-  public int getSize()
-  {
-    int res = mListeners.size();
-    if (mIterating)
-    {
-      res += mListenersToAdd.size();
-      res -= mListenersToRemove.size();
-    }
-
-    return res;
-  }
-
-  public boolean isEmpty()
-  {
-    return (getSize() <= 0);
-  }
 }

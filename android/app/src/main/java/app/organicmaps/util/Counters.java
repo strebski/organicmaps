@@ -20,7 +20,6 @@ public final class Counters
   static final String KEY_APP_LAST_SESSION_TIMESTAMP = "LastSessionTimestamp";
   static final String KEY_APP_SESSION_NUMBER = "SessionNumber";
   static final String KEY_MISC_FIRST_START_DIALOG_SEEN = "FirstStartDialogSeen";
-  static final String KEY_MISC_NEWS_LAST_VERSION = "WhatsNewShownVersion";
   static final String KEY_LIKES_LAST_RATED_SESSION = "LastRatedSession";
 
   private static final String KEY_LIKES_RATED_DIALOG = "RatedDialog";

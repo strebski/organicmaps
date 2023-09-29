@@ -34,7 +34,7 @@ public class ChooseBookmarkCategoryAdapter extends BaseBookmarkCategoryAdapter<C
   public ChooseBookmarkCategoryAdapter(Context context, int pos,
                                        @NonNull List<BookmarkCategory> categories)
   {
-    super(context, categories);
+    super(categories);
     mCheckedPosition = pos;
   }
 
@@ -106,8 +106,8 @@ public class ChooseBookmarkCategoryAdapter extends BaseBookmarkCategoryAdapter<C
 
   static class SingleChoiceHolder extends RecyclerView.ViewHolder
   {
-    TextView name;
-    RadioButton checked;
+    final TextView name;
+    final RadioButton checked;
 
     public SingleChoiceHolder(View convertView)
     {

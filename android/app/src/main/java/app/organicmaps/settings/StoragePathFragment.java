@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 
 import app.organicmaps.Framework;
 import app.organicmaps.R;
-import app.organicmaps.base.OnBackPressListener;
+import app.organicmaps.base.BaseMwmFragment;
 import app.organicmaps.util.Config;
 import app.organicmaps.util.StorageUtils;
 import app.organicmaps.util.Utils;
@@ -25,8 +25,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.io.File;
 import java.util.List;
 
-public class StoragePathFragment extends BaseSettingsFragment
-    implements OnBackPressListener
+public class StoragePathFragment extends BaseMwmFragment
 {
   private TextView mHeader;
 
@@ -34,15 +33,9 @@ public class StoragePathFragment extends BaseSettingsFragment
   private StoragePathManager mPathManager;
 
   @Override
-  protected int getLayoutRes()
-  {
-    return R.layout.fragment_prefs_storage;
-  }
-
-  @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
   {
-    View root = super.onCreateView(inflater, container, savedInstanceState);
+    View root = inflater.inflate(R.layout.fragment_prefs_storage, container, false);;
     mPathManager = new StoragePathManager(requireActivity());
     mAdapter = new StoragePathAdapter(mPathManager, requireActivity());
 

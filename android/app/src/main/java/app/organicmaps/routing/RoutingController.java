@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.DimenRes;
 import androidx.annotation.IntRange;
+import androidx.annotation.Keep;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -100,6 +101,9 @@ public class RoutingController
   @SuppressWarnings("FieldCanBeLocal")
   private final Framework.RoutingListener mRoutingListener = new Framework.RoutingListener()
   {
+    // Called from JNI.
+    @Keep
+    @SuppressWarnings("unused")
     @MainThread
     @Override
     public void onRoutingEvent(final int resultCode, @Nullable final String[] missingMaps)
@@ -845,12 +849,6 @@ public class RoutingController
 
     if (getStartPoint() != null && getEndPoint() != null)
       build();
-  }
-
-  @Framework.RouterType
-  public int getLastRouterType()
-  {
-    return mLastRouterType;
   }
 
   private void cancelRemovingIntermediatePointsTransaction()

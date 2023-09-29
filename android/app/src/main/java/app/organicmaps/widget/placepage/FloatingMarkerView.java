@@ -122,15 +122,6 @@ public class FloatingMarkerView extends RelativeLayout implements IMarker
     return getOffset();
   }
 
-  public void updateOffsets(@NonNull Entry entry, @NonNull Highlight highlight)
-  {
-    updateVertical(entry);
-    final float halfImg = Math.abs(mImage.getWidth()) / 2f;
-    boolean isLeftToRightDirection = isInvertedOrder(highlight);
-    mOffset = isLeftToRightDirection ? -getWidth() + halfImg : -halfImg;
-    updateHorizontal(highlight);
-  }
-
   private boolean isInvertedOrder(@NonNull Highlight highlight)
   {
     float x = highlight.getX();
@@ -153,72 +144,11 @@ public class FloatingMarkerView extends RelativeLayout implements IMarker
     return factor * mTextContentContainer.getHeight();
   }
 
-  private void updateVertical(@NonNull Entry entry)
-  {
-    LayoutParams layoutParams = (LayoutParams) mTextContentContainer.getLayoutParams();
-    float posY = entry.getY();
-    float halfContent = convertContainerHeight() / 2f;
-
-    if (posY + halfContent >= getChartView().getYChartMax())
-    {
-      layoutParams.addRule(ALIGN_PARENT_BOTTOM);
-      layoutParams.removeRule(ALIGN_PARENT_TOP);
-      layoutParams.removeRule(CENTER_VERTICAL);
-    }
-    else if (posY - halfContent <= getChartView().getYChartMin())
-    {
-      layoutParams.addRule(ALIGN_PARENT_TOP);
-      layoutParams.removeRule(ALIGN_PARENT_BOTTOM);
-      layoutParams.removeRule(CENTER_VERTICAL);
-    }
-    else
-    {
-      layoutParams.addRule(CENTER_VERTICAL);
-      layoutParams.removeRule(ALIGN_PARENT_TOP);
-      layoutParams.removeRule(ALIGN_PARENT_BOTTOM);
-    }
-
-    mTextContentContainer.setLayoutParams(layoutParams);
-  }
-
   private void updatePointValues(@NonNull Entry entry)
   {
     mDistanceTextView.setText(R.string.elevation_profile_distance);
     mDistanceValueView.setText(StringUtils.nativeFormatDistance(entry.getX()).toString(mDistanceValueView.getContext()));
     mAltitudeView.setText(Framework.nativeFormatAltitude(entry.getY()).toString(mAltitudeView.getContext()));
-  }
-
-  private void updateHorizontal(@NonNull Highlight highlight)
-  {
-    LayoutParams textParams = (LayoutParams) mInfoFloatingContainer.getLayoutParams();
-    LayoutParams imgParams = (LayoutParams) mImage.getLayoutParams();
-
-    boolean isInvertedOrder = isInvertedOrder(highlight);
-    int anchorId = isInvertedOrder ? mInfoFloatingContainer.getId() : mImage.getId();
-    LayoutParams toBecomeAnchor = isInvertedOrder ? textParams : imgParams;
-    LayoutParams toBecomeDependent = isInvertedOrder ? imgParams : textParams;
-
-    toBecomeAnchor.removeRule(RelativeLayout.END_OF);
-    toBecomeAnchor.removeRule(RelativeLayout.RIGHT_OF);
-    toBecomeDependent.addRule(RelativeLayout.END_OF, anchorId);
-
-    mFloatingTriangle.setRotation(isInvertedOrder ? 0 : TRIANGLE_ROTATION_ANGLE);
-    mInfoFloatingContainer.setLayoutParams(textParams);
-    mImage.setLayoutParams(imgParams);
-
-    LayoutParams triangleParams = (LayoutParams) mFloatingTriangle.getLayoutParams();
-    LayoutParams textContentParams = (LayoutParams) mTextContentContainer.getLayoutParams();
-
-    toBecomeAnchor = isInvertedOrder ? textContentParams : triangleParams;
-    toBecomeDependent = isInvertedOrder ? triangleParams : textContentParams;
-    anchorId = isInvertedOrder ? mTextContentContainer.getId() : mFloatingTriangle.getId();
-
-    toBecomeAnchor.removeRule(RelativeLayout.END_OF);
-    toBecomeAnchor.removeRule(RelativeLayout.RIGHT_OF);
-    toBecomeDependent.addRule(END_OF, anchorId);
-
-    mFloatingTriangle.setLayoutParams(triangleParams);
-    mTextContentContainer.setLayoutParams(textContentParams);
   }
 
   @Override

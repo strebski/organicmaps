@@ -2,8 +2,8 @@ package app.organicmaps.bookmarks.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 public class FeatureId implements Parcelable
@@ -31,19 +31,9 @@ public class FeatureId implements Parcelable
   private final long mMwmVersion;
   private final int mFeatureIndex;
 
-  @NonNull
-  public static FeatureId fromFeatureIdString(@NonNull String id)
-  {
-    if (TextUtils.isEmpty(id))
-      throw new AssertionError("Feature id string is empty");
-
-    String[] parts = id.split(":");
-    if (parts.length != 3)
-      throw new AssertionError("Wrong feature id string format");
-
-    return new FeatureId(parts[1], Long.parseLong(parts[0]), Integer.parseInt(parts[2]));
-  }
-
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   public FeatureId(@NonNull String mwmName, long mwmVersion, int featureIndex)
   {
     mMwmName = mwmName;
@@ -70,22 +60,6 @@ public class FeatureId implements Parcelable
   public int describeContents()
   {
     return 0;
-  }
-
-  @NonNull
-  public String getMwmName()
-  {
-    return mMwmName;
-  }
-
-  public long getMwmVersion()
-  {
-    return mMwmVersion;
-  }
-
-  public int getFeatureIndex()
-  {
-    return mFeatureIndex;
   }
 
   @Override

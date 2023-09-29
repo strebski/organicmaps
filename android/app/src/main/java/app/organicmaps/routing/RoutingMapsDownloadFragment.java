@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentFactory;
@@ -129,6 +130,9 @@ public class RoutingMapsDownloadFragment extends BaseRoutingErrorDialogFragment
           updateWheel(wheel);
       }
 
+      // Called from JNI.
+      @Keep
+      @SuppressWarnings("unused")
       @Override
       public void onStatusChanged(List<MapManager.StorageCallbackData> data)
       {
@@ -152,6 +156,9 @@ public class RoutingMapsDownloadFragment extends BaseRoutingErrorDialogFragment
           }
       }
 
+      // Called from JNI.
+      @Keep
+      @SuppressWarnings("unused")
       @Override
       public void onProgress(String countryId, long localSize, long remoteSize)
       {

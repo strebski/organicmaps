@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -23,8 +22,6 @@ public class ReportFragment extends BaseMwmToolbarFragment implements View.OnCli
   private EditText mProblemInput;
 
   private boolean mAdvancedMode;
-  @IntRange(from = 0, to = 3)
-  private int mSelectedProblem;
 
   @Nullable
   @Override

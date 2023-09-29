@@ -185,18 +185,18 @@ class SimpleTimetableAdapter extends RecyclerView.Adapter<SimpleTimetableAdapter
     // Limit closed spans to avoid dynamic inflation of views in recycler's children. Yeah, its a hack.
     static final int MAX_CLOSED_SPANS = 10;
 
-    SparseArray<CheckBox> days = new SparseArray<>(7);
-    View allday;
-    SwitchCompat swAllday;
-    View schedule;
-    View openClose;
-    View open;
-    View close;
-    TextView tvOpen;
-    TextView tvClose;
-    View[] closedHours = new View[MAX_CLOSED_SPANS];
-    View addClosed;
-    View deleteTimetable;
+    final SparseArray<CheckBox> days = new SparseArray<>(7);
+    final View allday;
+    final SwitchCompat swAllday;
+    final View schedule;
+    final View openClose;
+    final View open;
+    final View close;
+    final TextView tvOpen;
+    final TextView tvClose;
+    final View[] closedHours = new View[MAX_CLOSED_SPANS];
+    final View addClosed;
+    final View deleteTimetable;
 
     TimetableViewHolder(View itemView)
     {

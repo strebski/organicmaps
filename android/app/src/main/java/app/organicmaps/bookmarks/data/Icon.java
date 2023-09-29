@@ -217,12 +217,6 @@ public class Icon implements Parcelable
     return ARGB_COLORS[mColor];
   }
 
-  @BookmarkIconType
-  public int getType()
-  {
-    return mType;
-  }
-
   @DrawableRes
   public int getResId()
   {

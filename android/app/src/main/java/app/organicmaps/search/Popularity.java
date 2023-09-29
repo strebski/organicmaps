@@ -3,13 +3,18 @@ package app.organicmaps.search;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
+@Keep
 public class Popularity implements Parcelable
 {
   @NonNull
   private final Type mType;
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   public Popularity(int popularity)
   {
     mType = Type.makeInstance(popularity);

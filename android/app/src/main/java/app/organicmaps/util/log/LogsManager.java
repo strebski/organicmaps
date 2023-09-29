@@ -42,7 +42,7 @@ public final class LogsManager
   public interface OnZipCompletedListener
   {
     // Called from the logger thread.
-    public void onCompleted(final boolean success, @Nullable final String zipPath);
+    void onCompleted(final boolean success, @Nullable final String zipPath);
   }
 
   private final static String TAG = LogsManager.class.getSimpleName();
@@ -265,9 +265,9 @@ public final class LogsManager
   }
 
   // Called from JNI.
-  @SuppressWarnings("unused")
   @NonNull
   @Keep
+  @SuppressWarnings("unused")
   public static String getMemoryInfo(@NonNull Context context)
   {
     final Debug.MemoryInfo debugMI = new Debug.MemoryInfo();

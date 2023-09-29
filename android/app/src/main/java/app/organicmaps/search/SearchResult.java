@@ -8,6 +8,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import app.organicmaps.bookmarks.data.FeatureId;
@@ -17,8 +18,10 @@ import app.organicmaps.util.Utils;
 /**
  * Class instances are created from native code.
  */
+// Used by JNI.
+@Keep
 @SuppressWarnings("unused")
-public class SearchResult implements PopularityProvider
+public class SearchResult
 {
   public static final int TYPE_PURE_SUGGEST = 0;
   public static final int TYPE_SUGGEST = 1;
@@ -32,6 +35,7 @@ public class SearchResult implements PopularityProvider
   public static final SearchResult EMPTY = new SearchResult("", "", 0, 0,
                                                             new int[] {});
 
+  @Keep
   public static class Description
   {
     public final FeatureId featureId;
@@ -101,6 +105,9 @@ public class SearchResult implements PopularityProvider
     mPopularity = Popularity.defaultInstance();
   }
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   public SearchResult(String name, Description description, double lat, double lon, int[] highlightRanges,
                       boolean isHotel, int stars, @NonNull Popularity popularity)
   {
@@ -114,13 +121,6 @@ public class SearchResult implements PopularityProvider
     this.lon = lon;
     this.description = description;
     this.highlightRanges = highlightRanges;
-  }
-
-  @NonNull
-  @Override
-  public Popularity getPopularity()
-  {
-    return mPopularity;
   }
 
   @NonNull

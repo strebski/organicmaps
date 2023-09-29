@@ -44,7 +44,7 @@ public class NavigationController implements TrafficManager.TrafficCallback,
   private final LanesAdapter mLanesAdapter;
 
   private final NavMenu mNavMenu;
-  View.OnClickListener mOnSettingsClickListener;
+  final View.OnClickListener mOnSettingsClickListener;
 
   private void addWindowsInsets(@NonNull View topFrame)
   {

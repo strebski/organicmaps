@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import app.organicmaps.Framework;
 import app.organicmaps.MwmApplication;
@@ -30,11 +29,6 @@ public class SubwayManager
   public boolean isEnabled()
   {
     return Framework.nativeIsTransitSchemeEnabled();
-  }
-
-  public void toggle()
-  {
-    setEnabled(!isEnabled());
   }
 
   public void initialize()

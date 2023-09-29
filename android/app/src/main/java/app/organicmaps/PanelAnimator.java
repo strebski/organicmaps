@@ -70,23 +70,8 @@ class PanelAnimator
 
     UiUtils.show(mPanel);
 
-    for (MwmActivity.LeftAnimationTrackListener listener: mAnimationTrackListeners)
-      listener.onTrackStarted(false);
-    mAnimationTrackListeners.finishIterate();
-
     ValueAnimator animator = ValueAnimator.ofFloat(-mWidth, 0.0f);
     animator.addUpdateListener(animation -> track(animation));
-    animator.addListener(new UiUtils.SimpleAnimatorListener()
-    {
-      @Override
-      public void onAnimationEnd(Animator animation)
-      {
-        for (MwmActivity.LeftAnimationTrackListener listener: mAnimationTrackListeners)
-          listener.onTrackStarted(true);
-        mAnimationTrackListeners.finishIterate();
-      }
-    });
-
     animator.setDuration(mDuration);
     animator.setInterpolator(new AccelerateInterpolator());
     animator.start();
@@ -101,10 +86,6 @@ class PanelAnimator
       return;
     }
 
-    for (MwmActivity.LeftAnimationTrackListener listener: mAnimationTrackListeners)
-      listener.onTrackStarted(true);
-    mAnimationTrackListeners.finishIterate();
-
     ValueAnimator animator = ValueAnimator.ofFloat(0.0f, -mWidth);
     animator.addUpdateListener(animation -> track(animation));
     animator.addListener(new UiUtils.SimpleAnimatorListener()
@@ -113,10 +94,6 @@ class PanelAnimator
       public void onAnimationEnd(Animator animation)
       {
         UiUtils.hide(mPanel);
-
-        for (MwmActivity.LeftAnimationTrackListener listener: mAnimationTrackListeners)
-          listener.onTrackStarted(false);
-        mAnimationTrackListeners.finishIterate();
 
         if (completionListener != null)
           completionListener.run();

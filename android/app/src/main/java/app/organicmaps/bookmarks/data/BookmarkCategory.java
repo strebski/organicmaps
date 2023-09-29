@@ -3,13 +3,12 @@ package app.organicmaps.bookmarks.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.DrawableRes;
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
-import androidx.annotation.PluralsRes;
-import androidx.annotation.StringRes;
 
-import app.organicmaps.R;
-
+// Used by JNI.
+@Keep
+@SuppressWarnings("unused")
 public class BookmarkCategory implements Parcelable
 {
   private final long mId;
@@ -21,7 +20,7 @@ public class BookmarkCategory implements Parcelable
   private final String mDescription;
   private final int mTracksCount;
   private final int mBookmarksCount;
-  private boolean mIsVisible;
+  private final boolean mIsVisible;
 
   public BookmarkCategory(long id, @NonNull String name, @NonNull String annotation,
                           @NonNull String description, int tracksCount, int bookmarksCount,
@@ -75,11 +74,6 @@ public class BookmarkCategory implements Parcelable
   public boolean isVisible()
   {
     return mIsVisible;
-  }
-
-  public void setVisible(boolean isVisible)
-  {
-    mIsVisible = isVisible;
   }
 
   public int size()
@@ -158,33 +152,4 @@ public class BookmarkCategory implements Parcelable
       return new BookmarkCategory[size];
     }
   };
-
-  public enum AccessRules
-  {
-    ACCESS_RULES_LOCAL(R.string.not_shared, R.drawable.ic_lock),
-    ACCESS_RULES_PUBLIC(R.string.public_access, R.drawable.ic_public_inline),
-    ACCESS_RULES_DIRECT_LINK(R.string.limited_access, R.drawable.ic_link_inline),
-    ACCESS_RULES_AUTHOR_ONLY(R.string.access_rules_author_only, R.drawable.ic_lock);
-
-    private final int mResId;
-    private final int mDrawableResId;
-
-    AccessRules(int resId, int drawableResId)
-    {
-      mResId = resId;
-      mDrawableResId = drawableResId;
-    }
-
-    @DrawableRes
-    public int getDrawableResId()
-    {
-      return mDrawableResId;
-    }
-
-    @StringRes
-    public int getNameResId()
-    {
-      return mResId;
-    }
-  }
 }

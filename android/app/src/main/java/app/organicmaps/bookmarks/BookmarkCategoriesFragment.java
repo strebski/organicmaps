@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.CallSuper;
+import androidx.annotation.Keep;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +27,6 @@ import app.organicmaps.bookmarks.data.BookmarkManager;
 import app.organicmaps.bookmarks.data.BookmarkSharingResult;
 import app.organicmaps.dialog.EditTextDialogFragment;
 import app.organicmaps.util.Utils;
-import app.organicmaps.widget.PlaceholderView;
 import app.organicmaps.widget.recycler.DividerItemDecorationWithPadding;
 import app.organicmaps.util.StorageUtils;
 import app.organicmaps.util.bottomsheet.MenuBottomSheetFragment;
@@ -80,7 +80,7 @@ public class BookmarkCategoriesFragment extends BaseMwmRecyclerFragment<Bookmark
   protected BookmarkCategoriesAdapter createAdapter()
   {
     List<BookmarkCategory> items = BookmarkManager.INSTANCE.getCategories();
-    return new BookmarkCategoriesAdapter(requireContext(), items);
+    return new BookmarkCategoriesAdapter(items);
   }
 
   @CallSuper
@@ -89,7 +89,6 @@ public class BookmarkCategoriesFragment extends BaseMwmRecyclerFragment<Bookmark
   {
     super.onViewCreated(view, savedInstanceState);
 
-    onPrepareControllers(view);
     getAdapter().setOnClickListener(this);
     getAdapter().setOnLongClickListener(this);
     getAdapter().setOnMoreClickListener(this);
@@ -103,11 +102,6 @@ public class BookmarkCategoriesFragment extends BaseMwmRecyclerFragment<Bookmark
     rw.addItemDecoration(decor);
     mCategoriesAdapterObserver = this::onCategoriesChanged;
     BookmarkManager.INSTANCE.addCategoriesUpdatesListener(mCategoriesAdapterObserver);
-  }
-
-  protected void onPrepareControllers(@NonNull View view)
-  {
-    // No op
   }
 
   @Override
@@ -137,12 +131,6 @@ public class BookmarkCategoriesFragment extends BaseMwmRecyclerFragment<Bookmark
   {
     super.onResume();
     getAdapter().notifyDataSetChanged();
-  }
-
-  @Override
-  public void onPause()
-  {
-    super.onPause();
   }
 
   @Override
@@ -188,23 +176,26 @@ public class BookmarkCategoriesFragment extends BaseMwmRecyclerFragment<Bookmark
     return items;
   }
 
-  @Override
-  protected void setupPlaceholder(@Nullable PlaceholderView placeholder)
-  {
-    // A placeholder is no needed on this screen.
-  }
-
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   @Override
   public void onBookmarksLoadingStarted()
   {
   }
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   @Override
   public void onBookmarksLoadingFinished()
   {
     getAdapter().notifyDataSetChanged();
   }
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   @Override
   public void onBookmarksFileLoaded(boolean success)
   {

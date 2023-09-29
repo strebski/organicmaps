@@ -5,7 +5,6 @@ import android.content.Context;
 import android.location.Location;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import app.organicmaps.Framework;
 import app.organicmaps.MwmApplication;

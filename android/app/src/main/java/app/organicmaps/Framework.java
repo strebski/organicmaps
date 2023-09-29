@@ -3,6 +3,7 @@ package app.organicmaps;
 import android.graphics.Bitmap;
 
 import androidx.annotation.IntDef;
+import androidx.annotation.Keep;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,7 +12,6 @@ import app.organicmaps.api.ParsedRoutingData;
 import app.organicmaps.api.ParsedSearchRequest;
 import app.organicmaps.api.ParsingResult;
 import app.organicmaps.bookmarks.data.DistanceAndAzimut;
-import app.organicmaps.bookmarks.data.FeatureId;
 import app.organicmaps.bookmarks.data.MapObject;
 import app.organicmaps.routing.RouteMarkData;
 import app.organicmaps.routing.RoutePointInfo;
@@ -57,27 +57,22 @@ public class Framework
   public static final int ROUTER_TYPE_RULER = 4;
 
   @Retention(RetentionPolicy.SOURCE)
-  @IntDef({DO_AFTER_UPDATE_NOTHING, DO_AFTER_UPDATE_AUTO_UPDATE, DO_AFTER_UPDATE_ASK_FOR_UPDATE})
-  public @interface DoAfterUpdate {}
-
-  public static final int DO_AFTER_UPDATE_NOTHING = 0;
-  public static final int DO_AFTER_UPDATE_AUTO_UPDATE = 1;
-  public static final int DO_AFTER_UPDATE_ASK_FOR_UPDATE = 2;
-
-  @Retention(RetentionPolicy.SOURCE)
   @IntDef({ROUTE_REBUILD_AFTER_POINTS_LOADING})
   public @interface RouteRecommendationType {}
 
   public static final int ROUTE_REBUILD_AFTER_POINTS_LOADING = 0;
 
+  // Used by JNI.
+  @Keep
   @SuppressWarnings("unused")
   public interface PlacePageActivationListener
   {
     void onPlacePageActivated(@NonNull PlacePageData data);
-
     void onPlacePageDeactivated(boolean switchFullScreenMode);
   }
 
+  // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   public interface RoutingListener
   {
@@ -85,6 +80,8 @@ public class Framework
     void onRoutingEvent(int resultCode, String[] missingMaps);
   }
 
+  // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   public interface RoutingProgressListener
   {
@@ -92,30 +89,42 @@ public class Framework
     void onRouteBuildingProgress(float progress);
   }
 
+  // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   public interface RoutingRecommendationListener
   {
     void onRecommend(@RouteRecommendationType int recommendation);
   }
 
+  // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   public interface RoutingLoadPointsListener
   {
     void onRoutePointsLoaded(boolean success);
   }
 
+  // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   public interface StartTransactionListener
   {
     void onStartTransaction(boolean success, @NonNull String serverId, @NonNull String vendorId);
   }
 
+  // Used by JNI.
+  @Keep
+  @SuppressWarnings("unused")
   public static class Params3dMode
   {
     public boolean enabled;
     public boolean buildings;
   }
 
+  // Used by JNI.
+  @Keep
+  @SuppressWarnings("unused")
   public static class RouteAltitudeLimits
   {
     public int totalAscent;
@@ -181,26 +190,9 @@ public class Framework
 
   public static native String nativeGetGe0Url(double lat, double lon, double zoomLevel, String name);
 
-  public static native String nativeGetAddress(double lat, double lon);
-
   public static native void nativePlacePageActivationListener(@NonNull PlacePageActivationListener listener);
 
   public static native void nativeRemovePlacePageActivationListener();
-
-//  @UiThread
-//  public static native String nativeGetOutdatedCountriesString();
-//
-//  @UiThread
-//  @NonNull
-//  public static native String[] nativeGetOutdatedCountries();
-//
-//  @UiThread
-//  @DoAfterUpdate
-//  public static native int nativeToDoAfterUpdate();
-//
-//  public static native boolean nativeIsDataVersionChanged();
-//
-//  public static native void nativeUpdateSavedDataVersion();
 
   private static native long nativeGetDataVersion();
 
@@ -236,8 +228,10 @@ public class Framework
 
   public static native String[] nativeGetBookmarksFilesExts();
 
+  @SuppressWarnings("unused")
   public static native String nativeGetBookmarkDir();
 
+  @SuppressWarnings("unused")
   public static native String nativeGetSettingsDir();
 
   public static native String nativeGetWritableDir();
@@ -245,11 +239,8 @@ public class Framework
   public static native void nativeChangeWritableDir(String newPath);
 
   // Routing.
+  @SuppressWarnings("unused")
   public static native boolean nativeIsRoutingActive();
-
-  public static native boolean nativeIsRouteBuilt();
-
-  public static native boolean nativeIsRouteBuilding();
 
   public static native void nativeCloseRouting();
 
@@ -318,8 +309,6 @@ public class Framework
   public static native void nativeRemoveRoutePoint(@RoutePointInfo.RouteMarkType int markType,
                                                    int intermediateIndex);
 
-  public static native void nativeRemoveIntermediateRoutePoints();
-
   public static native boolean nativeCouldAddIntermediatePoint();
   @NonNull
   public static native RouteMarkData[] nativeGetRoutePoints();
@@ -363,8 +352,6 @@ public class Framework
   @NonNull
   public static native String nativeGetPoiContactUrl(int metadataType);
 
-  public static native void nativeZoomToPoint(double lat, double lon, int zoom, boolean animate);
-
   /**
    * @param isBusiness selection area will be bounded by building borders, if its true(eg. true for businesses in buildings).
    * @param applyPosition if true, map'll be animated to currently selected object.
@@ -382,7 +369,6 @@ public class Framework
 
   public static native void nativeRunFirstLaunchAnimation();
 
-  public static native int nativeOpenRoutePointsTransaction();
   public static native void nativeApplyRoutePointsTransaction(int transactionId);
   public static native void nativeCancelRoutePointsTransaction(int transactionId);
   public static native int nativeInvalidRoutePointsTransactionId();
@@ -392,11 +378,8 @@ public class Framework
   public static native void nativeSaveRoutePoints();
   public static native void nativeDeleteSavedRoutePoints();
 
-  public static native void nativeShowFeature(@NonNull FeatureId featureId);
-
   public static native void nativeMakeCrash();
 
-    public static native void nativeSetPowerManagerFacility(int facilityType, boolean state);
   public static native int nativeGetPowerManagerScheme();
   public static native void nativeSetPowerManagerScheme(int schemeType);
   public static native void nativeSetViewportCenter(double lat, double lon, int zoom);
@@ -415,12 +398,4 @@ public class Framework
 
   public static native void nativeMemoryWarning();
 
-  public enum LocalAdsEventType
-  {
-    LOCAL_ADS_EVENT_SHOW_POINT,
-    LOCAL_ADS_EVENT_OPEN_INFO,
-    LOCAL_ADS_EVENT_CLICKED_PHONE,
-    LOCAL_ADS_EVENT_CLICKED_WEBSITE,
-    LOCAL_ADS_EVENT_VISIT
-  }
 }

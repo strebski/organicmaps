@@ -1,7 +1,11 @@
 package app.organicmaps.bookmarks.data;
 
+import androidx.annotation.Keep;
+
 import app.organicmaps.util.Distance;
 
+// Called from JNI.
+@Keep
 public class DistanceAndAzimut
 {
   private final Distance mDistance;

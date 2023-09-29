@@ -2,8 +2,6 @@ package app.organicmaps.api;
 
 public class Const
 {
-  // Common
-  static final String API_SCHEME = "om://";
   static final String AUTHORITY = "app.organicmaps.api";
   static final String EXTRA_PREFIX = AUTHORITY + ".extra";
 

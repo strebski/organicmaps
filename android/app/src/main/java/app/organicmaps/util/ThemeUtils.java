@@ -37,7 +37,7 @@ public final class ThemeUtils
   {
     int styleRef = getResource(context, style);
 
-    int[] attrs = new int[] { attr };
+    int[] attrs = { attr };
     TypedArray ta = context.getTheme().obtainStyledAttributes(styleRef, attrs);
     ta.getValue(0, VALUE_BUFFER);
     ta.recycle();

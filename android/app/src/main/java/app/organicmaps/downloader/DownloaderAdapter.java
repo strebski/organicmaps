@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Keep;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -205,6 +206,9 @@ class DownloaderAdapter extends RecyclerView.Adapter<DownloaderAdapter.ViewHolde
       }
     }
 
+    // Called from JNI.
+    @Keep
+    @SuppressWarnings("unused")
     @Override
     public void onStatusChanged(List<MapManager.StorageCallbackData> data)
     {
@@ -228,6 +232,9 @@ class DownloaderAdapter extends RecyclerView.Adapter<DownloaderAdapter.ViewHolde
       }
     }
 
+    // Called from JNI.
+    @Keep
+    @SuppressWarnings("unused")
     @Override
     public void onProgress(String countryId, long localSize, long remoteSize)
     {

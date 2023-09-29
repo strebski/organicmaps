@@ -1,12 +1,14 @@
 package app.organicmaps.routing;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.Keep;
+
 import app.organicmaps.R;
 
 public class SingleLaneInfo
 {
-  LaneWay[] mLane;
-  boolean mIsActive;
+  final LaneWay[] mLane;
+  final boolean mIsActive;
 
   /**
    * IMPORTANT : Order of enum values MUST BE the same
@@ -36,6 +38,9 @@ public class SingleLaneInfo
     }
   }
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   SingleLaneInfo(byte[] laneOrdinals, boolean isActive)
   {
     mLane = new LaneWay[laneOrdinals.length];

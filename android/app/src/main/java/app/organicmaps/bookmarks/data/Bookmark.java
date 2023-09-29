@@ -4,24 +4,26 @@ import android.annotation.SuppressLint;
 import android.os.Parcel;
 
 import androidx.annotation.IntRange;
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import app.organicmaps.Framework;
 import app.organicmaps.routing.RoutePointInfo;
 import app.organicmaps.search.Popularity;
-import app.organicmaps.util.Constants;
 
 // TODO consider refactoring to remove hack with MapObject unmarshalling itself and Bookmark at the same time.
 @SuppressLint("ParcelCreator")
 public class Bookmark extends MapObject
 {
-  private Icon mIcon;
-  private long mCategoryId;
+  private final Icon mIcon;
+  private final long mCategoryId;
   private final long mBookmarkId;
   private final double mMerX;
   private final double mMerY;
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   public Bookmark(@NonNull FeatureId featureId, @IntRange(from = 0) long categoryId,
                   @IntRange(from = 0) long bookmarkId, String title, @Nullable String secondaryTitle,
                   @Nullable String subtitle, @Nullable String address, @Nullable RoutePointInfo routePointInfo,
@@ -73,47 +75,10 @@ public class Bookmark extends MapObject
     initXY();
   }
 
-  @Override
-  public double getScale()
-  {
-    return BookmarkManager.INSTANCE.getBookmarkScale(mBookmarkId);
-  }
-
-  public DistanceAndAzimut getDistanceAndAzimuth(double cLat, double cLon, double north)
-  {
-    return Framework.nativeGetDistanceAndAzimuth(mMerX, mMerY, cLat, cLon, north);
-  }
-
   private Icon getIconInternal()
   {
     return new Icon(BookmarkManager.INSTANCE.getBookmarkColor(mBookmarkId),
                     BookmarkManager.INSTANCE.getBookmarkIcon(mBookmarkId));
-  }
-
-  @Nullable
-  public Icon getIcon()
-  {
-    return mIcon;
-  }
-
-  public String getCategoryName()
-  {
-    return BookmarkManager.INSTANCE.getCategoryById(mCategoryId).getName();
-  }
-
-  public void setCategoryId(@IntRange(from = 0) long catId)
-  {
-    BookmarkManager.INSTANCE.notifyCategoryChanging(this, catId);
-    mCategoryId = catId;
-  }
-
-  public void setParams(@NonNull String title, @Nullable Icon icon, @NonNull String description)
-  {
-    BookmarkManager.INSTANCE.notifyParametersUpdating(this, title, icon, description);
-    if (icon != null)
-      mIcon = icon;
-    setTitle(title);
-    setDescription(description);
   }
 
   public long getCategoryId()
@@ -130,17 +95,5 @@ public class Bookmark extends MapObject
   public String getBookmarkDescription()
   {
     return BookmarkManager.INSTANCE.getBookmarkDescription(mBookmarkId);
-  }
-
-  @NonNull
-  public String getGe0Url(boolean addName)
-  {
-    return BookmarkManager.INSTANCE.encode2Ge0Url(mBookmarkId, addName);
-  }
-
-  @NonNull
-  public String getHttpGe0Url(boolean addName)
-  {
-    return getGe0Url(addName).replaceFirst(Constants.Url.SHORT_SHARE_PREFIX, Constants.Url.HTTP_SHARE_PREFIX);
   }
 }

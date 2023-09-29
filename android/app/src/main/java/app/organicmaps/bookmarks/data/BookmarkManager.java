@@ -7,14 +7,13 @@ import android.provider.OpenableColumns;
 
 import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
+import androidx.annotation.Keep;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 import app.organicmaps.Framework;
 import app.organicmaps.bookmarks.DataChangedListener;
-import app.organicmaps.bookmarks.BookmarkCategoriesFragment;
-import app.organicmaps.util.KeyValue;
 import app.organicmaps.util.StorageUtils;
 import app.organicmaps.util.concurrency.UiThread;
 import app.organicmaps.util.log.Logger;
@@ -27,9 +26,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// Called from JNI.
+@Keep
 @MainThread
 public enum BookmarkManager
 {
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   INSTANCE;
 
   @Retention(RetentionPolicy.SOURCE)
@@ -72,7 +76,7 @@ public enum BookmarkManager
 
   public static final List<Icon> ICONS = new ArrayList<>();
 
-  static String[] BOOKMARKS_EXTENSIONS = Framework.nativeGetBookmarksFilesExts();
+  static final String[] BOOKMARKS_EXTENSIONS = Framework.nativeGetBookmarksFilesExts();
 
   private static final String TAG = BookmarkManager.class.getSimpleName();
 
@@ -96,18 +100,6 @@ public enum BookmarkManager
 
   @NonNull
   private final List<BookmarksCloudListener> mCloudListeners = new ArrayList<>();
-
-  @NonNull
-  private final List<BookmarksCatalogPingListener> mCatalogPingListeners = new ArrayList<>();
-
-  @NonNull
-  private final List<BookmarksExpiredCategoriesListener> mExpiredCategoriesListeners = new ArrayList<>();
-
-  @Nullable
-  private OnElevationCurrentPositionChangedListener mOnElevationCurrentPositionChangedListener;
-
-  @Nullable
-  private OnElevationActivePointChangedListener mOnElevationActivePointChangedListener;
 
   static
   {
@@ -138,8 +130,7 @@ public enum BookmarkManager
   @Nullable
   public Bookmark addNewBookmark(double lat, double lon)
   {
-    final Bookmark bookmark = nativeAddBookmarkToLastEditedCategory(lat, lon);
-    return bookmark;
+    return nativeAddBookmarkToLastEditedCategory(lat, lon);
   }
 
   public void addLoadingListener(@NonNull BookmarksLoadingListener listener)
@@ -172,34 +163,15 @@ public enum BookmarkManager
     mSharingListeners.remove(listener);
   }
 
-  public void addCloudListener(@NonNull BookmarksCloudListener listener)
-  {
-    mCloudListeners.add(listener);
-  }
-
-  public void removeCloudListener(@NonNull BookmarksCloudListener listener)
-  {
-    mCloudListeners.remove(listener);
-  }
-
-  public void setElevationActivePointChangedListener(
-      @Nullable OnElevationActivePointChangedListener listener)
-  {
-    if (listener != null)
-      nativeSetElevationActiveChangedListener();
-    else
-      nativeRemoveElevationActiveChangedListener();
-
-    mOnElevationActivePointChangedListener = listener;
-  }
-
   // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   @MainThread
   public void onBookmarksChanged()
   {
     updateCache();
   }
+
 
   @SuppressWarnings("unused")
   @MainThread
@@ -210,6 +182,7 @@ public enum BookmarkManager
   }
 
   // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   @MainThread
   public void onBookmarksLoadingFinished()
@@ -221,6 +194,7 @@ public enum BookmarkManager
   }
 
   // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   @MainThread
   public void onBookmarksSortingCompleted(@NonNull SortedBlock[] sortedBlocks, long timestamp)
@@ -230,6 +204,7 @@ public enum BookmarkManager
   }
 
   // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   @MainThread
   public void onBookmarksSortingCancelled(long timestamp)
@@ -239,6 +214,7 @@ public enum BookmarkManager
   }
 
   // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   @MainThread
   public void onBookmarksFileLoaded(boolean success, @NonNull String fileName,
@@ -257,6 +233,7 @@ public enum BookmarkManager
   }
 
   // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   @MainThread
   public void onPreparedFileForSharing(BookmarkSharingResult result)
@@ -266,6 +243,7 @@ public enum BookmarkManager
   }
 
   // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   @MainThread
   public void onSynchronizationStarted(@SynchronizationType int type)
@@ -275,6 +253,7 @@ public enum BookmarkManager
   }
 
   // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   @MainThread
   public void onSynchronizationFinished(@SynchronizationType int type,
@@ -286,6 +265,7 @@ public enum BookmarkManager
   }
 
   // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   @MainThread
   public void onRestoreRequested(@RestoringRequestResult int result, @NonNull String deviceName,
@@ -296,6 +276,7 @@ public enum BookmarkManager
   }
 
   // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   @MainThread
   public void onRestoredFilesPrepared()
@@ -305,31 +286,19 @@ public enum BookmarkManager
   }
 
   // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   @MainThread
   public void onElevationCurrentPositionChanged()
   {
-    if (mOnElevationCurrentPositionChangedListener != null)
-      mOnElevationCurrentPositionChangedListener.onCurrentPositionChanged();
-  }
-
-  public void setElevationCurrentPositionChangedListener(@Nullable OnElevationCurrentPositionChangedListener listener)
-  {
-    if (listener != null)
-      nativeSetElevationCurrentPositionChangedListener();
-    else
-      nativeRemoveElevationCurrentPositionChangedListener();
-
-    mOnElevationCurrentPositionChangedListener = listener;
   }
 
   // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   @MainThread
   public void onElevationActivePointChanged()
   {
-    if (mOnElevationActivePointChangedListener != null)
-      mOnElevationActivePointChangedListener.onElevationActivePointChanged();
   }
 
   public boolean isVisible(long catId)
@@ -399,11 +368,6 @@ public enum BookmarkManager
   public void showBookmarkOnMap(long bmkId) { nativeShowBookmarkOnMap(bmkId); }
 
   public void showBookmarkCategoryOnMap(long catId) { nativeShowBookmarkCategoryOnMap(catId); }
-
-  public long getLastEditedCategory() { return nativeGetLastEditedCategory(); }
-
-  @Icon.PredefinedColor
-  public int getLastEditedColor() { return nativeGetLastEditedColor(); }
 
   @MainThread
   public void loadBookmarksFile(@NonNull String path, boolean isTemporaryFile)
@@ -572,16 +536,6 @@ public enum BookmarkManager
     nativeSetNotificationsEnabled(enabled);
   }
 
-  public boolean areNotificationsEnabled()
-  {
-    return nativeAreNotificationsEnabled();
-  }
-
-  public void requestRouteTags()
-  {
-    nativeRequestCatalogTags();
-  }
-
   public boolean hasLastSortingType(long catId) { return nativeHasLastSortingType(catId); }
 
   @SortingType
@@ -662,12 +616,6 @@ public enum BookmarkManager
     return nativeGetBookmarkScale(bookmarkId);
   }
 
-  @NonNull
-  public String encode2Ge0Url(@IntRange(from = 0) long bookmarkId, boolean addName)
-  {
-    return nativeEncode2Ge0Url(bookmarkId, addName);
-  }
-
   public void setBookmarkParams(@IntRange(from = 0) long bookmarkId, @NonNull String name,
                                 @Icon.PredefinedColor int color, @NonNull String descr)
   {
@@ -696,14 +644,6 @@ public enum BookmarkManager
     changeBookmarkCategory(bookmarkInfo.getCategoryId(), catId, bookmarkInfo.getBookmarkId());
   }
 
-  public void notifyCategoryChanging(@NonNull Bookmark bookmark, @IntRange(from = 0) long catId)
-  {
-    if (catId == bookmark.getCategoryId())
-      return;
-
-    changeBookmarkCategory(bookmark.getCategoryId(), catId, bookmark.getBookmarkId());
-  }
-
   public void notifyParametersUpdating(@NonNull BookmarkInfo bookmarkInfo, @NonNull String name,
                                        @Nullable Icon icon, @NonNull String description)
   {
@@ -715,35 +655,6 @@ public enum BookmarkManager
     {
       setBookmarkParams(bookmarkInfo.getBookmarkId(), name, icon.getColor(), description);
     }
-  }
-
-  public void notifyParametersUpdating(@NonNull Bookmark bookmark, @NonNull String name,
-                                       @Nullable Icon icon, @NonNull String description)
-  {
-    if (icon == null)
-      icon = bookmark.getIcon();
-
-    if (!name.equals(bookmark.getName()) || !icon.equals(bookmark.getIcon()) ||
-        !description.equals(getBookmarkDescription(bookmark.getBookmarkId())))
-    {
-      setBookmarkParams(bookmark.getBookmarkId(), name,
-                        icon != null ? icon.getColor() : getLastEditedColor(), description);
-    }
-  }
-
-  public double getElevationCurPositionDistance(long trackId)
-  {
-   return nativeGetElevationCurPositionDistance(trackId);
-  }
-
-  public void setElevationActivePoint(long trackId, double distance)
-  {
-    nativeSetElevationActivePoint(trackId, distance);
-  }
-
-  public double getElevationActivePointDistance(long trackId)
-  {
-    return nativeGetElevationActivePointDistance(trackId);
   }
 
   @Nullable
@@ -767,12 +678,6 @@ public enum BookmarkManager
 
   private native void nativeSetCategoryDescription(long catId, @NonNull String desc);
 
-  private native void nativeSetCategoryTags(long catId, @NonNull String[] tagsIds);
-
-  private native void nativeSetCategoryAccessRules(long catId, int accessRules);
-
-  private native void nativeSetCategoryCustomProperty(long catId, String key, String value);
-
   private static native void nativeLoadBookmarks();
 
   private native boolean nativeDeleteCategory(long catId);
@@ -792,11 +697,6 @@ public enum BookmarkManager
 
   @Nullable
   private native Bookmark nativeAddBookmarkToLastEditedCategory(double lat, double lon);
-
-  private native long nativeGetLastEditedCategory();
-
-  @Icon.PredefinedColor
-  private native int nativeGetLastEditedColor();
 
   private static native void nativeLoadBookmarksFile(@NonNull String path, boolean isTemporaryFile);
 
@@ -818,27 +718,7 @@ public enum BookmarkManager
 
   private static native void nativePrepareFileForSharing(long catId);
 
-  private static native boolean nativeIsCategoryEmpty(long catId);
-
   private static native void nativeSetNotificationsEnabled(boolean enabled);
-
-  private static native boolean nativeAreNotificationsEnabled();
-
-  @NonNull
-  private static native String nativeGetCatalogDeeplink(long catId);
-
-  @NonNull
-  private static native String nativeGetCatalogPublicLink(long catId);
-
-  @NonNull
-  private static native String nativeGetWebEditorUrl(@NonNull String serverId);
-
-  @NonNull
-  private static native KeyValue[] nativeGetCatalogHeaders();
-
-  private static native void nativeRequestCatalogTags();
-
-  private static native void nativeRequestCatalogCustomProperties();
 
   private native boolean nativeHasLastSortingType(long catId);
 
@@ -877,10 +757,6 @@ public enum BookmarkManager
 
   private static native double nativeGetBookmarkScale(@IntRange(from = 0) long bookmarkId);
 
-  @NonNull
-  private static native String nativeEncode2Ge0Url(@IntRange(from = 0) long bookmarkId,
-                                                   boolean addName);
-
   private static native void nativeSetBookmarkParams(@IntRange(from = 0) long bookmarkId,
                                                      @NonNull String name,
                                                      @Icon.PredefinedColor int color,
@@ -893,29 +769,30 @@ public enum BookmarkManager
   @NonNull
   private static native String nativeGetBookmarkAddress(@IntRange(from = 0) long bookmarkId);
 
-  private static native double nativeGetElevationCurPositionDistance(long trackId);
-
-  private static native void nativeSetElevationCurrentPositionChangedListener();
-
-  public static native void nativeRemoveElevationCurrentPositionChangedListener();
-
-  private static native void nativeSetElevationActivePoint(long trackId, double distanceInMeters);
-
-  private static native double nativeGetElevationActivePointDistance(long trackId);
-
-  private static native void nativeSetElevationActiveChangedListener();
-
-  public static native void nativeRemoveElevationActiveChangedListener();
-
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   public interface ElevationActivePointChangedListener
   {
     void onElevationActivePointChanged();
   }
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   public interface BookmarksLoadingListener
   {
+    // Called from JNI.
+    @Keep
+    @SuppressWarnings("unused")
     void onBookmarksLoadingStarted();
+    // Called from JNI.
+    @Keep
+    @SuppressWarnings("unused")
     void onBookmarksLoadingFinished();
+    // Called from JNI.
+    @Keep
+    @SuppressWarnings("unused")
     void onBookmarksFileLoaded(boolean success);
   }
 
@@ -968,37 +845,20 @@ public enum BookmarkManager
     void onRestoredFilesPrepared();
   }
 
-  public interface BookmarksCatalogPingListener
-  {
-    void onPingFinished(boolean isServiceAvailable);
-  }
-
-  public interface BookmarksExpiredCategoriesListener
-  {
-    void onCheckExpiredCategories(boolean hasExpiredCategories);
-  }
-
+  // Used by JNI.
+  @Keep
+  @SuppressWarnings("unused")
   public interface OnElevationActivePointChangedListener
   {
     void onElevationActivePointChanged();
   }
 
+  // Used by JNI.
+  @Keep
+  @SuppressWarnings("unused")
   public interface OnElevationCurrentPositionChangedListener
   {
     void onCurrentPositionChanged();
-  }
-
-  public enum UploadResult
-  {
-    UPLOAD_RESULT_SUCCESS,
-    UPLOAD_RESULT_NETWORK_ERROR,
-    UPLOAD_RESULT_SERVER_ERROR,
-    UPLOAD_RESULT_AUTH_ERROR,
-    /* Broken file */
-    UPLOAD_RESULT_MALFORMED_DATA_ERROR,
-    /* Edit on web */
-    UPLOAD_RESULT_ACCESS_ERROR,
-    UPLOAD_RESULT_INVALID_CALL
   }
 
   static class BookmarkCategoriesCache

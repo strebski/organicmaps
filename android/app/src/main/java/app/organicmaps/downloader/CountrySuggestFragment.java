@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
@@ -54,6 +55,9 @@ public class CountrySuggestFragment extends BaseMwmFragment implements View.OnCl
     initViews(view);
     mListenerSlot = MapManager.nativeSubscribe(new MapManager.StorageCallback()
     {
+      // Called from JNI.
+      @Keep
+      @SuppressWarnings("unused")
       @Override
       public void onStatusChanged(List<MapManager.StorageCallbackData> data)
       {
@@ -87,6 +91,9 @@ public class CountrySuggestFragment extends BaseMwmFragment implements View.OnCl
         updateViews();
       }
 
+      // Called from JNI.
+      @Keep
+      @SuppressWarnings("unused")
       @Override
       public void onProgress(String countryId, long localSize, long remoteSize)
       {

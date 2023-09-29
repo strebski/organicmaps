@@ -56,8 +56,6 @@ public enum TtsPlayer
   // TTS is locked down due to absence of supported languages
   private boolean mUnavailable;
 
-  TtsPlayer() {}
-
   private static @Nullable LanguageData findSupportedLanguage(String internalCode, List<LanguageData> langs)
   {
     if (TextUtils.isEmpty(internalCode))
@@ -195,7 +193,7 @@ public enum TtsPlayer
       }
   }
 
-  public void playTurnNotifications(@NonNull Context context, @NonNull String[] turnNotifications)
+  public void playTurnNotifications(@NonNull String[] turnNotifications)
   {
     if (isReady())
       for (String textToSpeak : turnNotifications)

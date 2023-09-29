@@ -1,11 +1,12 @@
 package app.organicmaps.search;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 /**
  * Native search will return results via this interface.
  */
-@SuppressWarnings("unused")
+@Keep
 public interface NativeSearchListener
 {
   /**

@@ -20,9 +20,6 @@ public final class SharedPropertiesUtils
 {
   private static final String PREFS_SHOW_EMULATE_BAD_STORAGE_SETTING = "ShowEmulateBadStorageSetting";
   private static final String PREFS_SHOULD_SHOW_LAYER_MARKER_FOR = "ShouldShowGuidesLayerMarkerFor";
-  private static final String PREFS_SHOULD_SHOW_LAYER_TUTORIAL_TOAST = "ShouldShowLayerTutorialToast";
-  private static final String PREFS_SHOULD_SHOW_HOW_TO_USE_GUIDES_LAYER_TOAST
-      = "ShouldShowHowToUseGuidesLayerToast";
 
   //Utils class
   private SharedPropertiesUtils()
@@ -35,16 +32,19 @@ public final class SharedPropertiesUtils
     return MwmApplication.prefs(context).getBoolean(KEY_PREF_STATISTICS, true);
   }
 
+  @SuppressWarnings("unused")
   public static void setStatisticsEnabled(@NonNull Context context, boolean enabled)
   {
     MwmApplication.prefs(context).edit().putBoolean(KEY_PREF_STATISTICS, enabled).apply();
   }
 
+  @SuppressWarnings("unused")
   public static boolean isCrashlyticsEnabled(@NonNull Context context)
   {
     return MwmApplication.prefs(context).getBoolean(KEY_PREF_CRASHLYTICS, true);
   }
 
+  @SuppressWarnings("unused")
   public static void setCrashlyticsEnabled(@NonNull Context context, boolean enabled)
   {
     MwmApplication.prefs(context).edit().putBoolean(KEY_PREF_CRASHLYTICS, enabled).apply();
@@ -94,39 +94,10 @@ public final class SharedPropertiesUtils
     }
   }
 
-  public static boolean shouldShowNewMarkerForLayerMode(@NonNull Context context, @NonNull String mode)
-  {
-    return shouldShowNewMarkerForLayerMode(context, Mode.valueOf(mode));
-  }
-
-  public static boolean shouldShowLayerTutorialToast(@NonNull Context context)
-  {
-    boolean result = getBoolean(context, PREFS_SHOULD_SHOW_LAYER_TUTORIAL_TOAST, true);
-    putBoolean(context, PREFS_SHOULD_SHOW_LAYER_TUTORIAL_TOAST, false);
-    return result;
-  }
-
-  public static boolean shouldShowHowToUseGuidesLayerToast(@NonNull Context context)
-  {
-    boolean result = getBoolean(context, PREFS_SHOULD_SHOW_HOW_TO_USE_GUIDES_LAYER_TOAST, true);
-    putBoolean(context, PREFS_SHOULD_SHOW_HOW_TO_USE_GUIDES_LAYER_TOAST, false);
-    return result;
-  }
-
   public static void setLayerMarkerShownForLayerMode(@NonNull Context context, @NonNull Mode mode)
   {
     putBoolean(context, PREFS_SHOULD_SHOW_LAYER_MARKER_FOR + mode.name()
                                                                  .toLowerCase(Locale.ENGLISH), false);
-  }
-
-  public static void setLayerMarkerShownForLayerMode(@NonNull Context context, @NonNull String mode)
-  {
-    setLayerMarkerShownForLayerMode(context, Mode.valueOf(mode));
-  }
-
-  private static boolean getBoolean(@NonNull Context context,  @NonNull String key)
-  {
-    return getBoolean(context, key, false);
   }
 
   private static boolean getBoolean(@NonNull Context context,  @NonNull String key, boolean defValue)

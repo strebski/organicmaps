@@ -42,7 +42,7 @@ public class LocationHelper implements BaseLocationProvider.Listener
   private static final long AGPS_EXPIRATION_TIME_MS = 16 * 60 * 60 * 1000; // 16 hours
 
   @NonNull
-  private Context mContext;
+  private final Context mContext;
 
   private static final String TAG = LocationState.LOCATION_TAG;
   @NonNull
@@ -162,6 +162,8 @@ public class LocationHelper implements BaseLocationProvider.Listener
     notifyLocationUpdated();
   }
 
+  // Used by GoogleFusedLocationProvider.
+  @SuppressWarnings("unused")
   @Override
   @UiThread
   public void onLocationResolutionRequired(@NonNull PendingIntent pendingIntent)
@@ -182,6 +184,8 @@ public class LocationHelper implements BaseLocationProvider.Listener
       listener.onLocationResolutionRequired(pendingIntent);
   }
 
+  // Used by GoogleFusedLocationProvider.
+  @SuppressWarnings("unused")
   @RequiresPermission(anyOf = {ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION})
   @Override
   @UiThread

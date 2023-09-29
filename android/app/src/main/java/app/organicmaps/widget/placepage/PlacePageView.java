@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.IdRes;
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -116,6 +117,9 @@ public class PlacePageView extends Fragment implements View.OnClickListener,
   private CountryItem mCurrentCountry;
   private final MapManager.StorageCallback mStorageCallback = new MapManager.StorageCallback()
   {
+    // Called from JNI.
+    @Keep
+    @SuppressWarnings("unused")
     @Override
     public void onStatusChanged(List<MapManager.StorageCallbackData> data)
     {
@@ -130,6 +134,9 @@ public class PlacePageView extends Fragment implements View.OnClickListener,
         }
     }
 
+    // Called from JNI.
+    @Keep
+    @SuppressWarnings("unused")
     @Override
     public void onProgress(String countryId, long localSize, long remoteSize)
     {

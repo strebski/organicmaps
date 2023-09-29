@@ -3,7 +3,6 @@ package app.organicmaps.bookmarks;
 import static app.organicmaps.bookmarks.Holders.CategoryViewHolder;
 import static app.organicmaps.bookmarks.Holders.HeaderViewHolder;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +36,9 @@ public class BookmarkCategoriesAdapter extends BaseBookmarkCategoryAdapter<Recyc
   @NonNull
   private final MassOperationAction mMassOperationAction = new MassOperationAction();
 
-  BookmarkCategoriesAdapter(@NonNull Context context, @NonNull List<BookmarkCategory> categories)
+  BookmarkCategoriesAdapter(@NonNull List<BookmarkCategory> categories)
   {
-    super(context.getApplicationContext(), categories);
+    super(categories);
   }
 
   public void setOnClickListener(@Nullable OnItemClickListener<BookmarkCategory> listener)

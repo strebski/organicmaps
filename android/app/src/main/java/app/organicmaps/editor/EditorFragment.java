@@ -21,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,12 +35,10 @@ import app.organicmaps.editor.data.LocalizedName;
 import app.organicmaps.editor.data.LocalizedStreet;
 import app.organicmaps.editor.data.TimeFormatUtils;
 import app.organicmaps.editor.data.Timetable;
-import app.organicmaps.util.Constants;
 import app.organicmaps.util.Graphics;
 import app.organicmaps.util.InputUtils;
 import app.organicmaps.util.Option;
 import app.organicmaps.util.StringUtils;
-import app.organicmaps.util.ThemeUtils;
 import app.organicmaps.util.UiUtils;
 import app.organicmaps.util.Utils;
 
@@ -114,7 +111,7 @@ public class EditorFragment extends BaseMwmFragment implements View.OnClickListe
     EditText mEdit;
     TextInputLayout mInput;
   }
-  Map<Metadata.MetadataType, MetadataEntry> mMetadata = new HashMap<>();
+  final Map<Metadata.MetadataType, MetadataEntry> mMetadata = new HashMap<>();
 
   private void initMetadataEntry(Metadata.MetadataType type, @StringRes int error)
   {
@@ -481,7 +478,7 @@ public class EditorFragment extends BaseMwmFragment implements View.OnClickListe
 
   private static EditText findInput(View blockWithInput)
   {
-    return (EditText) blockWithInput.findViewById(R.id.input);
+    return blockWithInput.findViewById(R.id.input);
   }
 
   private EditText findInputAndInitBlock(View blockWithInput, @DrawableRes int icon, @StringRes int hint)
@@ -494,7 +491,7 @@ public class EditorFragment extends BaseMwmFragment implements View.OnClickListe
     ((ImageView) blockWithInput.findViewById(R.id.icon)).setImageResource(icon);
     final TextInputLayout input = blockWithInput.findViewById(R.id.custom_input);
     input.setHint(hint);
-    return (EditText) input.findViewById(R.id.input);
+    return input.findViewById(R.id.input);
   }
 
   @Override

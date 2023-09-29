@@ -96,26 +96,10 @@ public class Metadata implements Parcelable
     return true;
   }
 
-  /**
-   * Adds metadata with type and value.
-   *
-   * @return true, if metadata was added, false otherwise
-   */
-  public boolean addMetadata(MetadataType type, String value)
-  {
-    mMetadataMap.put(type, value);
-    return true;
-  }
-
   @Nullable
   String getMetadata(MetadataType type)
   {
     return mMetadataMap.get(type);
-  }
-
-  boolean isEmpty()
-  {
-    return mMetadataMap.isEmpty();
   }
 
   @Override

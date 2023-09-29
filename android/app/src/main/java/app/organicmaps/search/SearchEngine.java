@@ -2,6 +2,7 @@ package app.organicmaps.search;
 
 import android.content.Context;
 
+import androidx.annotation.Keep;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,6 +48,9 @@ public enum SearchEngine implements NativeSearchListener,
         });
   }
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   @Override
   public void onMapSearchResults(final NativeMapSearchListener.Result[] results, final long timestamp, final boolean isLast)
   {
@@ -59,6 +63,9 @@ public enum SearchEngine implements NativeSearchListener,
         });
   }
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   public void onBookmarkSearchResultsUpdate(@Nullable long[] bookmarkIds, long timestamp)
   {
     for (NativeBookmarkSearchListener listener : mBookmarkListeners)
@@ -66,6 +73,9 @@ public enum SearchEngine implements NativeSearchListener,
     mBookmarkListeners.finishIterate();
   }
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   public void onBookmarkSearchResultsEnd(@Nullable long[] bookmarkIds, long timestamp)
   {
     for (NativeBookmarkSearchListener listener : mBookmarkListeners)
@@ -153,13 +163,6 @@ public enum SearchEngine implements NativeSearchListener,
   {
     nativeRunSearchMaps(query.getBytes(StandardCharsets.UTF_8), Language.getKeyboardLocale(context),
                         timestamp);
-  }
-
-  @MainThread
-  public void searchInteractive(@NonNull Context context, @NonNull String query, boolean isCategory,
-                                long timestamp, boolean isMapAndTable, boolean hasLocation, double lat, double lon)
-  {
-    searchInteractive(query, isCategory, Language.getKeyboardLocale(context), timestamp, isMapAndTable, hasLocation, lat, lon);
   }
 
   @MainThread

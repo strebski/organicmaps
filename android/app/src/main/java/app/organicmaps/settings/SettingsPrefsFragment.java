@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.TwoStatePreference;
 import app.organicmaps.Framework;
@@ -35,6 +36,7 @@ import app.organicmaps.util.NetworkPolicy;
 import app.organicmaps.util.PowerManagment;
 import app.organicmaps.util.SharedPropertiesUtils;
 import app.organicmaps.util.ThemeSwitcher;
+import app.organicmaps.util.ThemeUtils;
 import app.organicmaps.util.UiUtils;
 import app.organicmaps.util.Utils;
 import app.organicmaps.util.log.LogsManager;
@@ -46,7 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SettingsPrefsFragment extends BaseXmlSettingsFragment
+public class SettingsPrefsFragment extends PreferenceFragmentCompat
 {
   private static final int REQUEST_INSTALL_DATA = 1;
 
@@ -230,15 +232,16 @@ public class SettingsPrefsFragment extends BaseXmlSettingsFragment
   }
 
   @Override
-  protected int getXmlResources()
-  {
-    return R.xml.prefs_main;
-  }
-
-  @Override
-  public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
   {
     super.onViewCreated(view, savedInstanceState);
+
+    int color;
+    if (ThemeUtils.isDefaultTheme(requireContext()))
+      color = ContextCompat.getColor(requireContext(), R.color.bg_cards);
+    else
+      color = ContextCompat.getColor(requireContext(), R.color.bg_cards_night);
+    view.setBackgroundColor(color);
     mPreferenceScreen = getPreferenceScreen();
 
     if (isOnMainScreen())
@@ -774,6 +777,33 @@ public class SettingsPrefsFragment extends BaseXmlSettingsFragment
     final PreferenceCategory category = getPreference(categoryKey);
 
     category.removePreference(preference);
+  }
+
+  @NonNull
+  public <T extends Preference> T getPreference(@NonNull CharSequence key)
+  {
+    final T pref = findPreference(key);
+    if (pref == null)
+      throw new RuntimeException("Can't get preference by key: "+key);
+    return pref;
+  }
+
+  @Override
+  public void onCreatePreferences(Bundle bundle, String root)
+  {
+    setPreferencesFromResource(R.xml.prefs_main, root);
+  }
+
+  @Override
+  public void onAttach(Context context)
+  {
+    super.onAttach(context);
+    Utils.detachFragmentIfCoreNotInitialized(context, this);
+  }
+
+  protected SettingsActivity getSettingsActivity()
+  {
+    return (SettingsActivity) requireActivity();
   }
 
   enum ThemeMode

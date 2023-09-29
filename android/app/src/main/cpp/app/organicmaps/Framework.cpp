@@ -787,14 +787,6 @@ void CallSetRoutingLoadPointsListener(shared_ptr<jobject> listener, bool success
 
 RoutingManager::LoadRouteHandler g_loadRouteHandler;
 
-/// @name JNI EXPORTS
-JNIEXPORT jstring JNICALL
-Java_app_organicmaps_Framework_nativeGetAddress(JNIEnv * env, jclass clazz, jdouble lat, jdouble lon)
-{
-  auto const info = frm()->GetAddressAtPoint(mercator::FromLatLon(lat, lon));
-  return jni::ToJavaString(env, info.FormatAddress());
-}
-
 JNIEXPORT void JNICALL
 Java_app_organicmaps_Framework_nativeClearApiPoints(JNIEnv * env, jclass clazz)
 {
@@ -996,46 +988,6 @@ Java_app_organicmaps_Framework_nativeFormatSpeed(JNIEnv * env, jclass, jdouble s
                                 platform::GetLocalizedSpeedUnits(units));
 }
 
-/*
-JNIEXPORT jobject JNICALL
-Java_app_organicmaps_Framework_nativeGetOutdatedCountriesString(JNIEnv * env, jclass)
-{
-  return jni::ToJavaString(env, g_framework->GetOutdatedCountriesString());
-}
-
-JNIEXPORT jobjectArray JNICALL
-Java_app_organicmaps_Framework_nativeGetOutdatedCountries(JNIEnv * env, jclass)
-{
-  vector<Country const *> countries;
-  Storage const & storage = g_framework->GetStorage();
-  storage.GetOutdatedCountries(countries);
-
-  vector<string> ids;
-  for (auto country : countries)
-    ids.push_back(country->Name());
-
-  return jni::ToJavaStringArray(env, ids);
-}
-
-JNIEXPORT jint JNICALL
-Java_app_organicmaps_Framework_nativeToDoAfterUpdate(JNIEnv * env, jclass)
-{
-  return g_framework->ToDoAfterUpdate();
-}
-
-JNIEXPORT jboolean JNICALL
-Java_app_organicmaps_Framework_nativeIsDataVersionChanged(JNIEnv * env, jclass)
-{
-  return frm()->IsDataVersionUpdated() ? JNI_TRUE : JNI_FALSE;
-}
-
-JNIEXPORT void JNICALL
-Java_app_organicmaps_Framework_nativeUpdateSavedDataVersion(JNIEnv * env, jclass)
-{
-  frm()->UpdateSavedDataVersion();
-}
-*/
-
 JNIEXPORT jlong JNICALL
 Java_app_organicmaps_Framework_nativeGetDataVersion(JNIEnv * env, jclass)
 {
@@ -1124,24 +1076,6 @@ Java_app_organicmaps_Framework_nativeChangeWritableDir(JNIEnv * env, jclass, jst
   g_framework->RemoveLocalMaps();
   android::Platform::Instance().SetWritableDir(newPath);
   g_framework->AddLocalMaps();
-}
-
-JNIEXPORT jboolean JNICALL
-Java_app_organicmaps_Framework_nativeIsRoutingActive(JNIEnv * env, jclass)
-{
-  return frm()->GetRoutingManager().IsRoutingActive();
-}
-
-JNIEXPORT jboolean JNICALL
-Java_app_organicmaps_Framework_nativeIsRouteBuilding(JNIEnv * env, jclass)
-{
-  return frm()->GetRoutingManager().IsRouteBuilding();
-}
-
-JNIEXPORT jboolean JNICALL
-Java_app_organicmaps_Framework_nativeIsRouteBuilt(JNIEnv * env, jclass)
-{
-  return frm()->GetRoutingManager().IsRouteBuilt();
 }
 
 JNIEXPORT void JNICALL
@@ -1490,12 +1424,6 @@ Java_app_organicmaps_Framework_nativeRemoveRoutePoint(JNIEnv * env, jclass,
                                               static_cast<size_t>(intermediateIndex));
 }
 
-JNIEXPORT void JNICALL
-Java_app_organicmaps_Framework_nativeRemoveIntermediateRoutePoints(JNIEnv * env, jclass)
-{
-  frm()->GetRoutingManager().RemoveIntermediateRoutePoints();
-}
-
 JNIEXPORT jboolean JNICALL
 Java_app_organicmaps_Framework_nativeCouldAddIntermediatePoint(JNIEnv * env, jclass)
 {
@@ -1664,13 +1592,6 @@ Java_app_organicmaps_Framework_nativeGetAutoZoomEnabled(JNIEnv *, jclass)
   return frm()->LoadAutoZoom();
 }
 
-// static void nativeZoomToPoint(double lat, double lon, int zoom, boolean animate);
-JNIEXPORT void JNICALL
-Java_app_organicmaps_Framework_nativeZoomToPoint(JNIEnv * env, jclass, jdouble lat, jdouble lon, jint zoom, jboolean animate)
-{
-  g_framework->Scale(m2::PointD(mercator::FromLatLon(lat, lon)), zoom, animate);
-}
-
 JNIEXPORT jobject JNICALL
 Java_app_organicmaps_Framework_nativeDeleteBookmarkFromMapObject(JNIEnv * env, jclass)
 {
@@ -1756,12 +1677,6 @@ Java_app_organicmaps_Framework_nativeRunFirstLaunchAnimation(JNIEnv * env, jclas
   frm()->RunFirstLaunchAnimation();
 }
 
-JNIEXPORT jint JNICALL
-Java_app_organicmaps_Framework_nativeOpenRoutePointsTransaction(JNIEnv * env, jclass)
-{
-  return frm()->GetRoutingManager().OpenRoutePointsTransaction();
-}
-
 JNIEXPORT void JNICALL
 Java_app_organicmaps_Framework_nativeApplyRoutePointsTransaction(JNIEnv * env, jclass,
                                                                      jint transactionId)
@@ -1807,26 +1722,9 @@ Java_app_organicmaps_Framework_nativeDeleteSavedRoutePoints(JNIEnv *, jclass)
 }
 
 JNIEXPORT void JNICALL
-Java_app_organicmaps_Framework_nativeShowFeature(JNIEnv * env, jclass, jobject featureId)
-{
-  auto const f = g_framework->BuildFeatureId(env, featureId);
-
-  if (f.IsValid())
-    frm()->ShowFeature(f);
-}
-
-JNIEXPORT void JNICALL
 Java_app_organicmaps_Framework_nativeMakeCrash(JNIEnv *env, jclass type)
 {
   CHECK(false, ("Diagnostic native crash!"));
-}
-
-JNIEXPORT void JNICALL
-Java_app_organicmaps_Framework_nativeSetPowerManagerFacility(JNIEnv *, jclass,
-                                                                 jint facilityType, jboolean state)
-{
-  frm()->GetPowerManager().SetFacility(static_cast<power_management::Facility>(facilityType),
-                                       static_cast<bool>(state));
 }
 
 JNIEXPORT jint JNICALL

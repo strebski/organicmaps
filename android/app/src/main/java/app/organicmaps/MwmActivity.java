@@ -23,6 +23,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.CallSuper;
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
@@ -215,9 +216,6 @@ public class MwmActivity extends BaseMwmFragmentActivity
 
   public interface LeftAnimationTrackListener
   {
-    void onTrackStarted(boolean collapsed);
-
-    void onTrackFinished(boolean collapsed);
 
     void onTrackLeftAnimation(float offset);
   }
@@ -240,6 +238,9 @@ public class MwmActivity extends BaseMwmFragmentActivity
     runTasks();
   }
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   @Override
   public void onRenderingInitializationFinished()
   {
@@ -1142,6 +1143,8 @@ public class MwmActivity extends BaseMwmFragmentActivity
   }
 
   // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   @Override
   public void onPlacePageActivated(@NonNull PlacePageData data)
   {
@@ -1151,6 +1154,8 @@ public class MwmActivity extends BaseMwmFragmentActivity
   }
 
   // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   @Override
   public void onPlacePageDeactivated(boolean switchFullScreenMode)
   {
@@ -1344,19 +1349,6 @@ public class MwmActivity extends BaseMwmFragmentActivity
     RoutingPlanFragment fragment = (RoutingPlanFragment) getFragment(RoutingPlanFragment.class);
     if (fragment != null)
       fragment.showAddFinishFrame();
-  }
-
-  private void hideRoutingActionFrame()
-  {
-    if (!mIsTabletLayout)
-    {
-      mRoutingPlanInplaceController.hideActionFrame();
-      return;
-    }
-
-    RoutingPlanFragment fragment = (RoutingPlanFragment) getFragment(RoutingPlanFragment.class);
-    if (fragment != null)
-      fragment.hideActionFrame();
   }
 
   private void showMainMenu(boolean show)
@@ -1994,18 +1986,27 @@ public class MwmActivity extends BaseMwmFragmentActivity
     RoutingController.get().start();
   }
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   @Override
   public void onBookmarksLoadingStarted()
   {
     // Do nothing
   }
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   @Override
   public void onBookmarksLoadingFinished()
   {
     // Do nothing
   }
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   @Override
   public void onBookmarksFileLoaded(boolean success)
   {

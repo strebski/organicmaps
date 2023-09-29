@@ -11,12 +11,6 @@ public abstract class MwmBroadcastReceiver extends BroadcastReceiver
 {
   private static final String TAG = MwmBroadcastReceiver.class.getSimpleName();
 
-  @NonNull
-  protected String getTag()
-  {
-    return getClass().getSimpleName();
-  }
-
   protected abstract void onReceiveInitialized(@NonNull Context context, @NonNull Intent intent);
 
   @Override

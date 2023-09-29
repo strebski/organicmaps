@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
@@ -109,11 +110,6 @@ public class MwmApplication extends Application implements Application.ActivityL
   public SensorHelper getSensorHelper()
   {
     return mSensorHelper;
-  }
-
-  public MwmApplication()
-  {
-    super();
   }
 
   @NonNull
@@ -264,8 +260,7 @@ public class MwmApplication extends Application implements Application.ActivityL
     Counters.resetAppSessionCounters(context);
   }
 
-  // Called from jni
-  @SuppressWarnings("unused")
+  @Keep
   void forwardToMainThread(final long taskPointer)
   {
     Message m = Message.obtain(mMainLoopHandler, () -> nativeProcessTask(taskPointer));
@@ -363,6 +358,9 @@ public class MwmApplication extends Application implements Application.ActivityL
 
   private class StorageCallbackImpl implements MapManager.StorageCallback
   {
+    // Called from JNI.
+    @Keep
+    @SuppressWarnings("unused")
     @Override
     public void onStatusChanged(List<MapManager.StorageCallbackData> data)
     {
@@ -378,6 +376,9 @@ public class MwmApplication extends Application implements Application.ActivityL
         }
     }
 
+    // Called from JNI.
+    @Keep
+    @SuppressWarnings("unused")
     @Override
     public void onProgress(String countryId, long localSize, long remoteSize) {}
   }

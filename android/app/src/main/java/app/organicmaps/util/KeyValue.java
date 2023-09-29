@@ -1,5 +1,6 @@
 package app.organicmaps.util;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
@@ -12,6 +13,9 @@ public final class KeyValue implements Serializable
   @NonNull
   private final String mValue;
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   public KeyValue(@NonNull String key, @NonNull String value)
   {
     mKey = key;

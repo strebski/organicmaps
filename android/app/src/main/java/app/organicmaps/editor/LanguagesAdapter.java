@@ -42,7 +42,7 @@ public class LanguagesAdapter extends RecyclerView.Adapter<LanguagesAdapter.Hold
 
   protected class Holder extends RecyclerView.ViewHolder
   {
-    TextView name;
+    final TextView name;
 
     public Holder(View itemView)
     {

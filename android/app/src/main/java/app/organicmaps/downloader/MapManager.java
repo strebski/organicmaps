@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.text.TextUtils;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -21,7 +22,6 @@ import java.util.List;
 @UiThread
 public final class MapManager
 {
-  @SuppressWarnings("unused")
   public static class StorageCallbackData
   {
     public final String countryId;
@@ -29,6 +29,9 @@ public final class MapManager
     public final int errorCode;
     public final boolean isLeafNode;
 
+    // Called from JNI.
+    @Keep
+    @SuppressWarnings("unused")
     public StorageCallbackData(String countryId, int newStatus, int errorCode, boolean isLeafNode)
     {
       this.countryId = countryId;
@@ -38,6 +41,8 @@ public final class MapManager
     }
   }
 
+  // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   public interface StorageCallback
   {
@@ -45,6 +50,8 @@ public final class MapManager
     void onProgress(String countryId, long localSize, long remoteSize);
   }
 
+  // Called from JNI.
+  @Keep
   @SuppressWarnings("unused")
   interface CurrentCountryChangedListener
   {

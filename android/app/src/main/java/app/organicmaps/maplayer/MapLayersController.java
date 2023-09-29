@@ -20,6 +20,7 @@ public class MapLayersController
   @NonNull
   private final ImageButton mLayersButton;
   @NonNull
+  final
   OnShowMenuListener mOnShowMenuListener;
   @NonNull
   private Mode mCurrentLayer;

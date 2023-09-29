@@ -22,8 +22,8 @@ public class CuisineAdapter extends RecyclerView.Adapter<CuisineAdapter.ViewHold
 {
   private static class Item implements Comparable<Item>
   {
-    String cuisineTranslated;
-    String cuisineKey;
+    final String cuisineTranslated;
+    final String cuisineKey;
 
     public Item(String key, String translation)
     {

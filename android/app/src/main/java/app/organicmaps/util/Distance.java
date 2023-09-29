@@ -2,6 +2,7 @@ package app.organicmaps.util;
 
 import android.content.Context;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
@@ -36,6 +37,9 @@ public final class Distance
   public final String mDistanceStr;
   public final Units mUnits;
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   public Distance(double distance, @NonNull String distanceStr, byte unitsIndex)
   {
     mDistance = distance;

@@ -1,5 +1,7 @@
 package app.organicmaps.api;
 
+import androidx.annotation.Keep;
+
 import app.organicmaps.Framework;
 
 /**
@@ -11,6 +13,9 @@ public class ParsedRoutingData
   @Framework.RouterType
   public final int mRouterType;
 
+  // Called from JNI.
+  @Keep
+  @SuppressWarnings("unused")
   public ParsedRoutingData(RoutePoint[] points, int routerType) {
     this.mPoints = points;
     this.mRouterType = routerType;

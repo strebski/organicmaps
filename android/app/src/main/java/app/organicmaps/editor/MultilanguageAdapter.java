@@ -92,8 +92,8 @@ public class MultilanguageAdapter extends RecyclerView.Adapter<MultilanguageAdap
 
   public class Holder extends RecyclerView.ViewHolder
   {
-    EditText input;
-    TextInputLayout inputLayout;
+    final EditText input;
+    final TextInputLayout inputLayout;
 
     public Holder(View itemView)
     {
