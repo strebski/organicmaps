@@ -17,7 +17,6 @@ import androidx.core.content.ContextCompat;
 
 import app.organicmaps.Framework;
 import app.organicmaps.MwmApplication;
-import app.organicmaps.base.Initializable;
 import app.organicmaps.bookmarks.data.FeatureId;
 import app.organicmaps.bookmarks.data.MapObject;
 import app.organicmaps.routing.RoutingController;

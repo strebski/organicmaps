@@ -20,7 +20,6 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 
 import app.organicmaps.background.OsmUploadWork;
 import app.organicmaps.downloader.DownloaderNotifier;
-import app.organicmaps.base.MediaPlayerWrapper;
 import app.organicmaps.bookmarks.data.BookmarkManager;
 import app.organicmaps.downloader.CountryItem;
 import app.organicmaps.downloader.MapManager;
@@ -77,7 +76,6 @@ public class MwmApplication extends Application implements Application.ActivityL
   private final Object mMainQueueToken = new Object();
   @NonNull
   private final MapManager.StorageCallback mStorageCallbacks = new StorageCallbackImpl();
-  private MediaPlayerWrapper mPlayer;
 
   @Nullable
   private WeakReference<Activity> mTopActivity;
@@ -225,14 +223,14 @@ public class MwmApplication extends Application implements Application.ActivityL
 
     initNativeStrings();
     ThemeSwitcher.INSTANCE.initialize(this);
-    SearchEngine.INSTANCE.initialize(null);
+    SearchEngine.INSTANCE.initialize();
     BookmarkManager.loadBookmarks();
     TtsPlayer.INSTANCE.initialize(this);
     ThemeSwitcher.INSTANCE.restart(false);
     RoutingController.get().initialize(this);
-    TrafficManager.INSTANCE.initialize(null);
-    SubwayManager.from(this).initialize(null);
-    IsolinesManager.from(this).initialize(null);
+    TrafficManager.INSTANCE.initialize();
+    SubwayManager.from(this).initialize();
+    IsolinesManager.from(this).initialize();
     ProcessLifecycleOwner.get().getLifecycle().addObserver(mProcessLifecycleObserver);
 
     Logger.i(TAG, "Framework initialized");
@@ -273,12 +271,6 @@ public class MwmApplication extends Application implements Application.ActivityL
     Message m = Message.obtain(mMainLoopHandler, () -> nativeProcessTask(taskPointer));
     m.obj = mMainQueueToken;
     mMainLoopHandler.sendMessage(m);
-  }
-
-  @NonNull
-  public MediaPlayerWrapper getMediaPlayer()
-  {
-    return mPlayer;
   }
 
   private static native void nativeSetSettingsDir(String settingsPath);
