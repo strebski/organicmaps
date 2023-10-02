@@ -1812,7 +1812,7 @@ BookmarkManager::KMLDataCollectionPtr BookmarkManager::LoadBookmarks(
       continue;
     if (m_needTeardown)
       break;
-    collection->emplace_back(filePath, std::unique_ptr<kml::FileData>(&kmlData.value()));
+    collection->emplace_back(filePath, std::make_unique<kml::FileData>(std::move(kmlData.value())));
   }
   return collection;
 }
